@@ -35,8 +35,10 @@ namespace Statecraft.UI.Components
     {
         private readonly VisualElement artwork;
         private readonly VisualElement accentLine;
-        private readonly VerticalGradientElement artworkShade;
         private readonly Label artworkPlaceholder;
+        private readonly VisualElement lockIndicator;
+        private readonly VisualElement lockShackle;
+        private readonly VisualElement lockBody;
         private readonly Label typeLabel;
         private readonly Label nameLabel;
         private readonly Label descriptionLabel;
@@ -51,27 +53,34 @@ namespace Statecraft.UI.Components
 
             artwork = UiFactory.Container("skill-artwork");
             artworkPlaceholder = UiFactory.Label("◇", "skill-artwork-placeholder");
-            artworkShade = new VerticalGradientElement("skill-artwork-shade");
             artwork.Add(artworkPlaceholder);
 
-            var artworkCopy = UiFactory.Container("skill-artwork-copy");
+            lockIndicator = UiFactory.Container("skill-lock-indicator");
+            lockShackle = UiFactory.Container("skill-lock-shackle");
+            lockBody = UiFactory.Container("skill-lock-body");
+            lockIndicator.Add(lockShackle);
+            lockIndicator.Add(lockBody);
+            artwork.Add(lockIndicator);
+
+            var body = UiFactory.Container("skill-card-body");
             nameLabel = UiFactory.Label("Compétence", "skill-card-name");
             var header = UiFactory.Container("skill-card-header");
             typeLabel = UiFactory.Label("TYPE", "skill-type");
             stateLabel = UiFactory.Label("OUVERT", "skill-state");
             header.Add(typeLabel);
             header.Add(stateLabel);
-            artworkCopy.Add(nameLabel);
-            artworkCopy.Add(header);
-            artwork.Add(artworkShade);
-            artwork.Add(artworkCopy);
 
             descriptionLabel = UiFactory.Label("Description", "skill-description");
+            var spacer = UiFactory.Container("skill-card-spacer");
             accentLine = UiFactory.Container("skill-accent-line");
+            body.Add(nameLabel);
+            body.Add(header);
+            body.Add(descriptionLabel);
+            body.Add(spacer);
+            body.Add(accentLine);
 
             Add(artwork);
-            Add(descriptionLabel);
-            Add(accentLine);
+            Add(body);
 
             clicked += HandleClicked;
             RegisterCallback<PointerEnterEvent>(_ => SetHovered(true));
@@ -89,9 +98,10 @@ namespace Statecraft.UI.Components
             typeLabel.text = data.Type.ToUpperInvariant();
             nameLabel.text = data.DisplayName.ToUpperInvariant();
             descriptionLabel.text = data.ShortDescription;
-            stateLabel.text = IsLocked ? "◆  VERROUILLÉ" : "OUVERT";
+            stateLabel.text = IsLocked ? "VERROUILLÉ" : "OUVERT";
             tooltip = data.ShortDescription;
             EnableInClassList("leader-skill-card--locked", IsLocked);
+            lockIndicator.style.display = IsLocked ? DisplayStyle.Flex : DisplayStyle.None;
 
             if (data.Artwork != null)
             {
@@ -116,7 +126,15 @@ namespace Statecraft.UI.Components
             stateLabel.style.color = IsLocked ? theme.SecondaryTextColor : theme.AccentColor;
             artwork.style.backgroundColor = theme.PrimaryColor;
             artworkPlaceholder.style.color = theme.OrnamentColor;
-            artworkShade.SetColors(Color.clear, WithAlpha(theme.BackgroundColor, 0.96f));
+            lockIndicator.style.borderTopColor = theme.AccentColor;
+            lockIndicator.style.borderRightColor = theme.AccentColor;
+            lockIndicator.style.borderBottomColor = theme.AccentColor;
+            lockIndicator.style.borderLeftColor = theme.AccentColor;
+            lockShackle.style.borderTopColor = theme.AccentColor;
+            lockShackle.style.borderRightColor = theme.AccentColor;
+            lockShackle.style.borderLeftColor = theme.AccentColor;
+            lockBody.style.backgroundColor = theme.AccentColor;
+            ApplyPrestigeFont(theme.LeaderPrestigeFont);
             RefreshVisualState();
         }
 
@@ -158,13 +176,20 @@ namespace Statecraft.UI.Components
             style.borderBottomColor = border;
             style.borderLeftColor = border;
             var surface = emphasized
-                ? Color.Lerp(theme.SurfaceColor, theme.AccentColor, isSelected ? 0.12f : 0.06f)
-                : theme.SurfaceColor;
-            style.backgroundColor = WithAlpha(surface, isSelected ? 0.78f : isHovered ? 0.68f : 0.5f);
+                ? Color.Lerp(theme.BackgroundColor, theme.AccentColor, isSelected ? 0.055f : 0.025f)
+                : theme.BackgroundColor;
+            style.backgroundColor = WithAlpha(surface, isSelected ? 0.9f : isHovered ? 0.82f : 0.74f);
             accentLine.style.backgroundColor = emphasized ? theme.AccentColor : theme.OrnamentColor;
             artwork.style.unityBackgroundImageTintColor = IsLocked
-                ? new Color(0.54f, 0.54f, 0.54f, 1f)
-                : emphasized ? Color.white : new Color(0.91f, 0.91f, 0.91f, 1f);
+                ? new Color(0.48f, 0.48f, 0.48f, 1f)
+                : emphasized ? Color.white : new Color(0.96f, 0.96f, 0.96f, 1f);
+        }
+
+        private void ApplyPrestigeFont(Font font)
+        {
+            nameLabel.style.unityFont = font != null
+                ? new StyleFont(font)
+                : new StyleFont(StyleKeyword.Null);
         }
 
         private static Color WithAlpha(Color color, float alpha)

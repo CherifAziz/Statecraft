@@ -40,6 +40,9 @@ namespace Statecraft.UI.Themes
         [Header("Optional Leader Skill art")]
         [SerializeField] private LeaderSkillArtworkBinding[] leaderSkillArtworks = Array.Empty<LeaderSkillArtworkBinding>();
 
+        [Header("Optional Typography")]
+        [SerializeField] private Font leaderPrestigeFont = null;
+
         [Header("Optional Leader Background FX")]
         [SerializeField] private bool leaderBackgroundFxEnabled = false;
         [Range(0f, 6f)]
@@ -71,6 +74,7 @@ namespace Statecraft.UI.Themes
         public Sprite Emblem => emblem;
         public Sprite PortraitFrame => portraitFrame;
         public Texture2D SurfaceTexture => surfaceTexture;
+        public Font LeaderPrestigeFont => leaderPrestigeFont;
         public bool LeaderBackgroundFxEnabled => leaderBackgroundFxEnabled;
         public float LeaderParallaxStrength => leaderParallaxStrength;
         public float LeaderDriftStrength => leaderDriftStrength;

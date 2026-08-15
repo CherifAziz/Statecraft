@@ -10,6 +10,7 @@ namespace Statecraft.UI.Components
         private readonly Label iconLabel;
         private readonly VisualElement fill;
         private readonly VisualElement iconFrame;
+        private readonly VisualElement marker;
 
         public LeaderStatView(string statName, string icon)
         {
@@ -28,6 +29,8 @@ namespace Statecraft.UI.Components
 
             var track = UiFactory.Container("stat-track");
             fill = UiFactory.Container("stat-fill");
+            marker = UiFactory.Container("stat-marker");
+            fill.Add(marker);
             track.Add(fill);
 
             body.Add(heading);
@@ -41,6 +44,7 @@ namespace Statecraft.UI.Components
         public Label NameLabel => nameLabel;
         public Label IconLabel => iconLabel;
         public VisualElement IconFrame => iconFrame;
+        public VisualElement Marker => marker;
 
         public void SetValue(int value)
         {

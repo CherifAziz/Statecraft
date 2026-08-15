@@ -13,6 +13,7 @@ namespace Statecraft.UI.Themes
         public VisualElement Emblem { get; set; }
         public VisualElement PortraitFrame { get; set; }
         public VisualElement SurfaceTexture { get; set; }
+        public VisualElement EditorialSurfaceTexture { get; set; }
         public VerticalGradientElement IdentityGradient { get; set; }
         public VerticalGradientElement EditorialBackdrop { get; set; }
         public IReadOnlyList<VisualElement> Surfaces { get; set; }
@@ -22,6 +23,7 @@ namespace Statecraft.UI.Themes
         public IReadOnlyList<Label> PrimaryLabels { get; set; }
         public IReadOnlyList<Label> SecondaryLabels { get; set; }
         public IReadOnlyList<Label> AccentLabels { get; set; }
+        public IReadOnlyList<Label> PrestigeLabels { get; set; }
         public IReadOnlyList<Button> Buttons { get; set; }
         public IReadOnlyList<LeaderSkillCard> SkillCards { get; set; }
     }
@@ -39,12 +41,15 @@ namespace Statecraft.UI.Themes
             SetArtwork(bindings.Emblem, theme.Emblem);
             SetArtwork(bindings.PortraitFrame, theme.PortraitFrame);
             SetTexture(bindings.SurfaceTexture, theme.SurfaceTexture);
+            SetTexture(bindings.EditorialSurfaceTexture, theme.SurfaceTexture);
             bindings.IdentityGradient.SetColors(
                 WithAlpha(theme.BackgroundColor, 0f),
-                WithAlpha(theme.BackgroundColor, 0.94f));
+                WithAlpha(theme.BackgroundColor, 0.64f),
+                WithAlpha(theme.BackgroundColor, 0.97f),
+                0.46f);
             bindings.EditorialBackdrop.SetColors(
-                WithAlpha(theme.BackgroundColor, 0.92f),
-                WithAlpha(theme.SurfaceColor, 0.86f));
+                WithAlpha(theme.BackgroundColor, 0.98f),
+                WithAlpha(theme.SurfaceColor, 0.965f));
 
             SetBackground(bindings.Surfaces, theme.SurfaceColor);
             SetBackground(bindings.Accents, theme.AccentColor);
@@ -71,6 +76,13 @@ namespace Statecraft.UI.Themes
             foreach (var label in bindings.AccentLabels)
             {
                 label.style.color = theme.AccentColor;
+            }
+
+            foreach (var label in bindings.PrestigeLabels)
+            {
+                label.style.unityFont = theme.LeaderPrestigeFont != null
+                    ? new StyleFont(theme.LeaderPrestigeFont)
+                    : new StyleFont(StyleKeyword.Null);
             }
 
             foreach (var button in bindings.Buttons)

@@ -53,6 +53,7 @@ namespace Statecraft.Core
             root.RegisterCallback<GeometryChangedEvent>(evt =>
             {
                 root.EnableInClassList("compact", evt.newRect.width < 1400f);
+                root.EnableInClassList("short-desktop", evt.newRect.height < 1000f);
             });
 
             var styleSheet = Resources.Load<StyleSheet>(StyleResourcePath);
