@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22222222222222222222222222222222, type: 3}
+  m_Name: FranceLeader
+  m_EditorClassIdentifier: Assembly-CSharp::Statecraft.Data.LeaderDefinition
+  id: fr-leader-01
+  displayName: Élise Marceau
+  title: Présidente de la République
+  portrait: {fileID: 0}
+  stats:
+    charisma: 78
+    diplomacy: 86
+    authority: 72
+    strategy: 81
+    economy: 75
+    eloquence: 89

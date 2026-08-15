@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11111111111111111111111111111111, type: 3}
+  m_Name: FranceTheme
+  m_EditorClassIdentifier: Assembly-CSharp::Statecraft.UI.Themes.CountryTheme
+  primaryColor: {r: 0.06666667, g: 0.06666667, b: 0.05882353, a: 1}
+  secondaryColor: {r: 0.9411765, g: 0.9137255, b: 0.8470588, a: 1}
+  accentColor: {r: 0.7764706, g: 0.6313726, b: 0.3568628, a: 1}
+  backgroundColor: {r: 0.03529412, g: 0.03921569, b: 0.03529412, a: 1}
+  surfaceColor: {r: 0.09019608, g: 0.09019608, b: 0.07450981, a: 1}
+  primaryTextColor: {r: 0.9607843, g: 0.9333333, b: 0.8745098, a: 1}
+  secondaryTextColor: {r: 0.7254902, g: 0.6901961, b: 0.6196079, a: 1}
+  borderColor: {r: 0.4588235, g: 0.3803922, b: 0.2313726, a: 1}
+  ornamentColor: {r: 0.8313726, g: 0.7137255, b: 0.427451, a: 1}
+  backgroundArtwork: {fileID: 0}
+  leaderScreenArtwork: {fileID: 0}
+  optionalTextures: []
+  visualIdentifier: elysee-republique
+  transitionStyleIdentifier: ceremonial-fade
+  ambience: {fileID: 0}
+  transitionSound: {fileID: 0}

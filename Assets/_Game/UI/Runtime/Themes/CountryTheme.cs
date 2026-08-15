@@ -1,0 +1,77 @@
+using UnityEngine;
+
+namespace Statecraft.UI.Themes
+{
+    [CreateAssetMenu(fileName = "CountryTheme", menuName = "Statecraft/UI/Country Theme")]
+    public sealed class CountryTheme : ScriptableObject
+    {
+        [Header("Palette")]
+        [SerializeField] private Color primaryColor;
+        [SerializeField] private Color secondaryColor;
+        [SerializeField] private Color accentColor;
+        [SerializeField] private Color backgroundColor;
+        [SerializeField] private Color surfaceColor;
+        [SerializeField] private Color primaryTextColor;
+        [SerializeField] private Color secondaryTextColor;
+        [SerializeField] private Color borderColor;
+        [SerializeField] private Color ornamentColor;
+
+        [Header("Optional visual assets")]
+        [SerializeField] private Sprite backgroundArtwork = null;
+        [SerializeField] private Sprite leaderScreenArtwork = null;
+        [SerializeField] private Texture2D[] optionalTextures = System.Array.Empty<Texture2D>();
+
+        [Header("Identity")]
+        [SerializeField] private string visualIdentifier;
+        [SerializeField] private string transitionStyleIdentifier;
+
+        [Header("Reserved audio hooks")]
+        [SerializeField] private AudioClip ambience = null;
+        [SerializeField] private AudioClip transitionSound = null;
+
+        public Color PrimaryColor => primaryColor;
+        public Color SecondaryColor => secondaryColor;
+        public Color AccentColor => accentColor;
+        public Color BackgroundColor => backgroundColor;
+        public Color SurfaceColor => surfaceColor;
+        public Color PrimaryTextColor => primaryTextColor;
+        public Color SecondaryTextColor => secondaryTextColor;
+        public Color BorderColor => borderColor;
+        public Color OrnamentColor => ornamentColor;
+        public Sprite BackgroundArtwork => backgroundArtwork;
+        public Sprite LeaderScreenArtwork => leaderScreenArtwork;
+        public Texture2D[] OptionalTextures => optionalTextures;
+        public string VisualIdentifier => visualIdentifier;
+        public string TransitionStyleIdentifier => transitionStyleIdentifier;
+        public AudioClip Ambience => ambience;
+        public AudioClip TransitionSound => transitionSound;
+
+#if UNITY_EDITOR
+        public void Configure(
+            Color primary,
+            Color secondary,
+            Color accent,
+            Color background,
+            Color surface,
+            Color primaryText,
+            Color secondaryText,
+            Color border,
+            Color ornament,
+            string identifier,
+            string transitionIdentifier)
+        {
+            primaryColor = primary;
+            secondaryColor = secondary;
+            accentColor = accent;
+            backgroundColor = background;
+            surfaceColor = surface;
+            primaryTextColor = primaryText;
+            secondaryTextColor = secondaryText;
+            borderColor = border;
+            ornamentColor = ornament;
+            visualIdentifier = identifier;
+            transitionStyleIdentifier = transitionIdentifier;
+        }
+#endif
+    }
+}
