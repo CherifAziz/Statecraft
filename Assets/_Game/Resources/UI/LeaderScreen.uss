@@ -150,6 +150,16 @@
 .portrait-artwork {
     background-size: contain;
     background-position: center bottom;
+    opacity: 0;
+    translate: 0 8px;
+    transition-property: opacity, translate;
+    transition-duration: 360ms;
+    transition-timing-function: ease-out;
+}
+
+.portrait-artwork--visible {
+    opacity: 1;
+    translate: 0 0;
 }
 
 .portrait-frame {

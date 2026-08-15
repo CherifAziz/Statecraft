@@ -42,7 +42,7 @@ namespace Statecraft.Editor
                 Html("#C88B57"), "carthage-mediterranee", "mosaic-reveal");
 
             var franceLeader = CreateOrLoad<LeaderDefinition>(Root + "/FranceLeader.asset");
-            franceLeader.Configure("fr-leader-01", "Élise Marceau", "Présidente de la République", new LeaderStats
+            franceLeader.Configure("fr-leader-01", "Emmanuel Macron", "Président de la République", new LeaderStats
             {
                 charisma = 78,
                 diplomacy = 86,

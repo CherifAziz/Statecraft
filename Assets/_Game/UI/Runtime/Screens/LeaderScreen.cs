@@ -34,6 +34,7 @@ namespace Statecraft.UI.Screens
         private readonly List<Label> primaryLabels = new();
         private readonly List<Label> secondaryLabels = new();
         private readonly LeaderBackgroundFx backgroundFx;
+        private int portraitRevealVersion;
 
         public LeaderScreen(Action back)
         {
@@ -148,6 +149,7 @@ namespace Statecraft.UI.Screens
 
         public void Bind(CountryDefinition country)
         {
+            portraitRevealVersion++;
             var leader = country.Leader;
             countryName.text = country.DisplayName.ToUpperInvariant();
             countryMetadata.text = $"{country.Capital.ToUpperInvariant()}  •  {FormatPopulation(country.Population)} HAB.  •  {FormatGdp(country.GdpUsd)} PIB";
@@ -160,11 +162,24 @@ namespace Statecraft.UI.Screens
             {
                 portraitArtwork.style.backgroundImage = new StyleBackground(leader.Portrait);
                 portraitMonogram.style.display = DisplayStyle.None;
+                portraitOrnament.style.display = DisplayStyle.None;
+                portraitArtwork.RemoveFromClassList("portrait-artwork--visible");
+
+                var revealVersion = portraitRevealVersion;
+                portraitArtwork.schedule.Execute(() =>
+                {
+                    if (revealVersion == portraitRevealVersion)
+                    {
+                        portraitArtwork.AddToClassList("portrait-artwork--visible");
+                    }
+                }).StartingIn(20);
             }
             else
             {
                 portraitArtwork.style.backgroundImage = StyleKeyword.None;
+                portraitArtwork.RemoveFromClassList("portrait-artwork--visible");
                 portraitMonogram.style.display = DisplayStyle.Flex;
+                portraitOrnament.style.display = DisplayStyle.Flex;
             }
 
             countryEmblemFallback.style.display = country.Theme.Emblem == null

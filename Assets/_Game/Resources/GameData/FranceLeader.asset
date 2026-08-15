@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: FranceLeader
   m_EditorClassIdentifier: Assembly-CSharp::Statecraft.Data.LeaderDefinition
   id: fr-leader-01
-  displayName: Élise Marceau
-  title: Présidente de la République
-  portrait: {fileID: 0}
+  displayName: Emmanuel Macron
+  title: Président de la République
+  portrait: {fileID: 21300000, guid: bd8b4b22c2534dafb63cc9834ad688c1, type: 3}
   stats:
     charisma: 78
     diplomacy: 86
