@@ -10,6 +10,8 @@ namespace Statecraft.Core
     {
         private const string CatalogResourcePath = "GameData/CountryCatalog";
         private const string StyleResourcePath = "UI/Statecraft";
+        private const string LeaderStyleResourcePath = "UI/LeaderScreen";
+        private const string RuntimeThemeResourcePath = "UI/StatecraftTheme";
 
         private PanelSettings panelSettings;
         private UIDocument document;
@@ -34,6 +36,12 @@ namespace Statecraft.Core
             panelSettings.referenceResolution = new Vector2Int(1920, 1080);
             panelSettings.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight;
             panelSettings.match = 0.5f;
+            panelSettings.themeStyleSheet = Resources.Load<ThemeStyleSheet>(RuntimeThemeResourcePath);
+
+            if (panelSettings.themeStyleSheet == null)
+            {
+                Debug.LogError($"Missing runtime theme at Resources/{RuntimeThemeResourcePath}.tss.");
+            }
 
             document = gameObject.AddComponent<UIDocument>();
             document.panelSettings = panelSettings;
@@ -55,6 +63,16 @@ namespace Statecraft.Core
             else
             {
                 Debug.LogError($"Missing UI style sheet at Resources/{StyleResourcePath}.uss.");
+            }
+
+            var leaderStyleSheet = Resources.Load<StyleSheet>(LeaderStyleResourcePath);
+            if (leaderStyleSheet != null)
+            {
+                root.styleSheets.Add(leaderStyleSheet);
+            }
+            else
+            {
+                Debug.LogError($"Missing UI style sheet at Resources/{LeaderStyleResourcePath}.uss.");
             }
         }
 

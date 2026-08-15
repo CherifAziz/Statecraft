@@ -21,9 +21,11 @@ MonoBehaviour:
   secondaryTextColor: {r: 0.7254902, g: 0.6901961, b: 0.6196079, a: 1}
   borderColor: {r: 0.4588235, g: 0.3803922, b: 0.2313726, a: 1}
   ornamentColor: {r: 0.8313726, g: 0.7137255, b: 0.427451, a: 1}
-  backgroundArtwork: {fileID: 0}
-  leaderScreenArtwork: {fileID: 0}
-  optionalTextures: []
+  leaderBackgroundArtwork: {fileID: 0}
+  leaderForegroundOverlay: {fileID: 0}
+  emblem: {fileID: 0}
+  portraitFrame: {fileID: 0}
+  surfaceTexture: {fileID: 0}
   visualIdentifier: elysee-republique
   transitionStyleIdentifier: ceremonial-fade
   ambience: {fileID: 0}

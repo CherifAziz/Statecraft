@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Statecraft.UI.Themes
 {
@@ -16,10 +17,14 @@ namespace Statecraft.UI.Themes
         [SerializeField] private Color borderColor;
         [SerializeField] private Color ornamentColor;
 
-        [Header("Optional visual assets")]
-        [SerializeField] private Sprite backgroundArtwork = null;
-        [SerializeField] private Sprite leaderScreenArtwork = null;
-        [SerializeField] private Texture2D[] optionalTextures = System.Array.Empty<Texture2D>();
+        [Header("Optional Leader Screen art layers")]
+        [FormerlySerializedAs("backgroundArtwork")]
+        [SerializeField] private Sprite leaderBackgroundArtwork = null;
+        [FormerlySerializedAs("leaderScreenArtwork")]
+        [SerializeField] private Sprite leaderForegroundOverlay = null;
+        [SerializeField] private Sprite emblem = null;
+        [SerializeField] private Sprite portraitFrame = null;
+        [SerializeField] private Texture2D surfaceTexture = null;
 
         [Header("Identity")]
         [SerializeField] private string visualIdentifier;
@@ -38,9 +43,11 @@ namespace Statecraft.UI.Themes
         public Color SecondaryTextColor => secondaryTextColor;
         public Color BorderColor => borderColor;
         public Color OrnamentColor => ornamentColor;
-        public Sprite BackgroundArtwork => backgroundArtwork;
-        public Sprite LeaderScreenArtwork => leaderScreenArtwork;
-        public Texture2D[] OptionalTextures => optionalTextures;
+        public Sprite LeaderBackgroundArtwork => leaderBackgroundArtwork;
+        public Sprite LeaderForegroundOverlay => leaderForegroundOverlay;
+        public Sprite Emblem => emblem;
+        public Sprite PortraitFrame => portraitFrame;
+        public Texture2D SurfaceTexture => surfaceTexture;
         public string VisualIdentifier => visualIdentifier;
         public string TransitionStyleIdentifier => transitionStyleIdentifier;
         public AudioClip Ambience => ambience;

@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Statecraft.UI.Components;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Statecraft.UI.Themes
@@ -6,7 +8,11 @@ namespace Statecraft.UI.Themes
     public sealed class CountryThemeBindings
     {
         public VisualElement Root { get; set; }
-        public VisualElement HeroArtwork { get; set; }
+        public VisualElement BackgroundArtwork { get; set; }
+        public VisualElement ForegroundOverlay { get; set; }
+        public VisualElement Emblem { get; set; }
+        public VisualElement PortraitFrame { get; set; }
+        public VisualElement SurfaceTexture { get; set; }
         public IReadOnlyList<VisualElement> Surfaces { get; set; }
         public IReadOnlyList<VisualElement> Accents { get; set; }
         public IReadOnlyList<VisualElement> Ornaments { get; set; }
@@ -14,6 +20,7 @@ namespace Statecraft.UI.Themes
         public IReadOnlyList<Label> PrimaryLabels { get; set; }
         public IReadOnlyList<Label> SecondaryLabels { get; set; }
         public IReadOnlyList<Button> Buttons { get; set; }
+        public IReadOnlyList<LeaderSkillCard> SkillCards { get; set; }
     }
 
     public static class CountryThemeApplicator
@@ -22,22 +29,13 @@ namespace Statecraft.UI.Themes
         {
             bindings.Root.style.backgroundColor = theme.BackgroundColor;
 
-            if (theme.BackgroundArtwork != null)
-            {
-                bindings.Root.style.backgroundImage = new StyleBackground(theme.BackgroundArtwork);
-            }
-            else
-            {
-                bindings.Root.style.backgroundImage = StyleKeyword.None;
-            }
-
-            if (bindings.HeroArtwork != null)
-            {
-                bindings.HeroArtwork.style.backgroundColor = theme.PrimaryColor;
-                bindings.HeroArtwork.style.backgroundImage = theme.LeaderScreenArtwork != null
-                    ? new StyleBackground(theme.LeaderScreenArtwork)
-                    : new StyleBackground(StyleKeyword.None);
-            }
+            bindings.Root.style.backgroundImage = StyleKeyword.None;
+            bindings.BackgroundArtwork.style.backgroundColor = theme.PrimaryColor;
+            SetArtwork(bindings.BackgroundArtwork, theme.LeaderBackgroundArtwork);
+            SetArtwork(bindings.ForegroundOverlay, theme.LeaderForegroundOverlay);
+            SetArtwork(bindings.Emblem, theme.Emblem);
+            SetArtwork(bindings.PortraitFrame, theme.PortraitFrame);
+            SetTexture(bindings.SurfaceTexture, theme.SurfaceTexture);
 
             SetBackground(bindings.Surfaces, theme.SurfaceColor);
             SetBackground(bindings.Accents, theme.AccentColor);
@@ -63,13 +61,32 @@ namespace Statecraft.UI.Themes
 
             foreach (var button in bindings.Buttons)
             {
-                button.style.backgroundColor = theme.AccentColor;
-                button.style.color = theme.BackgroundColor;
-                button.style.borderTopColor = theme.OrnamentColor;
-                button.style.borderRightColor = theme.OrnamentColor;
-                button.style.borderBottomColor = theme.OrnamentColor;
-                button.style.borderLeftColor = theme.OrnamentColor;
+                button.style.backgroundColor = Color.clear;
+                button.style.color = theme.SecondaryTextColor;
+                button.style.borderTopColor = theme.BorderColor;
+                button.style.borderRightColor = theme.BorderColor;
+                button.style.borderBottomColor = theme.BorderColor;
+                button.style.borderLeftColor = theme.BorderColor;
             }
+
+            foreach (var skillCard in bindings.SkillCards)
+            {
+                skillCard.ApplyTheme(theme);
+            }
+        }
+
+        private static void SetArtwork(VisualElement element, Sprite artwork)
+        {
+            element.style.backgroundImage = artwork != null
+                ? new StyleBackground(artwork)
+                : new StyleBackground(StyleKeyword.None);
+        }
+
+        private static void SetTexture(VisualElement element, Texture2D texture)
+        {
+            element.style.backgroundImage = texture != null
+                ? new StyleBackground(texture)
+                : new StyleBackground(StyleKeyword.None);
         }
 
         private static void SetBackground(IEnumerable<VisualElement> elements, UnityEngine.Color color)

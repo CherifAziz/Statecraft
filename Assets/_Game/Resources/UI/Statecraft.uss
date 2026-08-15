@@ -460,10 +460,6 @@
     border-bottom-width: 1px;
 }
 
-.leader-panel:last-child {
-    margin-right: 0;
-}
-
 .stat-row {
     margin-top: 24px;
 }

@@ -6,6 +6,7 @@ namespace Statecraft.UI.Components
     public sealed class LeaderStatView : VisualElement
     {
         private readonly Label valueLabel;
+        private readonly Label nameLabel;
         private readonly VisualElement fill;
 
         public LeaderStatView(string statName)
@@ -13,7 +14,8 @@ namespace Statecraft.UI.Components
             AddToClassList("stat-row");
 
             var heading = UiFactory.Container("stat-heading");
-            heading.Add(UiFactory.Label(statName.ToUpperInvariant(), "stat-name"));
+            nameLabel = UiFactory.Label(statName.ToUpperInvariant(), "stat-name");
+            heading.Add(nameLabel);
             valueLabel = UiFactory.Label("0", "stat-value");
             heading.Add(valueLabel);
 
@@ -27,6 +29,7 @@ namespace Statecraft.UI.Components
 
         public VisualElement Fill => fill;
         public Label ValueLabel => valueLabel;
+        public Label NameLabel => nameLabel;
 
         public void SetValue(int value)
         {
