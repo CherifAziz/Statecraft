@@ -29,7 +29,7 @@ MonoBehaviour:
   leaderBackgroundFxEnabled: 1
   leaderParallaxStrength: 2.5
   leaderDriftStrength: 1.5
-  leaderLightBreathingStrength: 0.018
+  leaderLightBreathingStrength: 0
   visualIdentifier: elysee-republique
   transitionStyleIdentifier: ceremonial-fade
   ambience: {fileID: 0}

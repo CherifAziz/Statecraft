@@ -103,7 +103,7 @@ namespace Statecraft.UI.Components
             background.style.scale = new Scale(new Vector3(zoom, zoom, 1f));
 
             var lightPhase = (Mathf.Sin(elapsed * Mathf.PI * 2f / LightCycleSeconds) + 1f) * 0.5f;
-            ambientLight.style.opacity = 0.008f + lightPhase * theme.LeaderLightBreathingStrength;
+            ambientLight.style.opacity = lightPhase * theme.LeaderLightBreathingStrength;
         }
 
         private void ResetVisuals()
