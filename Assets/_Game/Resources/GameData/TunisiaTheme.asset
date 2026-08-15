@@ -26,6 +26,10 @@ MonoBehaviour:
   emblem: {fileID: 0}
   portraitFrame: {fileID: 0}
   surfaceTexture: {fileID: 0}
+  leaderBackgroundFxEnabled: 0
+  leaderParallaxStrength: 0
+  leaderDriftStrength: 0
+  leaderLightBreathingStrength: 0
   visualIdentifier: carthage-mediterranee
   transitionStyleIdentifier: mosaic-reveal
   ambience: {fileID: 0}

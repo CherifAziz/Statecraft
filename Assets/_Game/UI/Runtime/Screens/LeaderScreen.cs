@@ -16,6 +16,7 @@ namespace Statecraft.UI.Screens
         private readonly Label leaderTitle;
         private readonly Label portraitMonogram;
         private readonly VisualElement backgroundArtwork;
+        private readonly VisualElement ambientLight;
         private readonly VisualElement surfaceTexture;
         private readonly VisualElement foregroundOverlay;
         private readonly VisualElement countryEmblem;
@@ -32,6 +33,7 @@ namespace Statecraft.UI.Screens
         private readonly List<LeaderSkillCard> skillCards = new();
         private readonly List<Label> primaryLabels = new();
         private readonly List<Label> secondaryLabels = new();
+        private readonly LeaderBackgroundFx backgroundFx;
 
         public LeaderScreen(Action back)
         {
@@ -40,8 +42,10 @@ namespace Statecraft.UI.Screens
             AddToClassList("leader-screen");
 
             backgroundArtwork = Layer("leader-background-artwork");
+            ambientLight = Layer("leader-ambient-light");
             surfaceTexture = Layer("leader-surface-texture");
             foregroundOverlay = Layer("leader-foreground-overlay");
+            backgroundFx = new LeaderBackgroundFx(this, backgroundArtwork, ambientLight);
 
             var header = UiFactory.Container("leader-header");
             var countryIdentity = UiFactory.Container("leader-country-identity");
@@ -135,10 +139,11 @@ namespace Statecraft.UI.Screens
             stage.Add(editorialColumn);
 
             Add(backgroundArtwork);
+            Add(ambientLight);
             Add(surfaceTexture);
+            Add(foregroundOverlay);
             Add(header);
             Add(stage);
-            Add(foregroundOverlay);
         }
 
         public void Bind(CountryDefinition country)
@@ -197,6 +202,7 @@ namespace Statecraft.UI.Screens
                 Buttons = new[] { backButton },
                 SkillCards = skillCards
             });
+            backgroundFx.Apply(country.Theme);
 
             SelectSkillCard(skillCards[0]);
         }

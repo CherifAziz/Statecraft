@@ -26,6 +26,15 @@ namespace Statecraft.UI.Themes
         [SerializeField] private Sprite portraitFrame = null;
         [SerializeField] private Texture2D surfaceTexture = null;
 
+        [Header("Optional Leader Background FX")]
+        [SerializeField] private bool leaderBackgroundFxEnabled = false;
+        [Range(0f, 6f)]
+        [SerializeField] private float leaderParallaxStrength = 0f;
+        [Range(0f, 4f)]
+        [SerializeField] private float leaderDriftStrength = 0f;
+        [Range(0f, 0.05f)]
+        [SerializeField] private float leaderLightBreathingStrength = 0f;
+
         [Header("Identity")]
         [SerializeField] private string visualIdentifier;
         [SerializeField] private string transitionStyleIdentifier;
@@ -48,6 +57,10 @@ namespace Statecraft.UI.Themes
         public Sprite Emblem => emblem;
         public Sprite PortraitFrame => portraitFrame;
         public Texture2D SurfaceTexture => surfaceTexture;
+        public bool LeaderBackgroundFxEnabled => leaderBackgroundFxEnabled;
+        public float LeaderParallaxStrength => leaderParallaxStrength;
+        public float LeaderDriftStrength => leaderDriftStrength;
+        public float LeaderLightBreathingStrength => leaderLightBreathingStrength;
         public string VisualIdentifier => visualIdentifier;
         public string TransitionStyleIdentifier => transitionStyleIdentifier;
         public AudioClip Ambience => ambience;

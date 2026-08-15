@@ -4,6 +4,7 @@
 }
 
 .leader-background-artwork,
+.leader-ambient-light,
 .leader-surface-texture,
 .leader-foreground-overlay {
     position: absolute;
@@ -17,7 +18,16 @@
 }
 
 .leader-background-artwork {
-    opacity: 0.42;
+    left: -8px;
+    right: -8px;
+    top: -8px;
+    bottom: -8px;
+    opacity: 0.72;
+    transform-origin: center;
+}
+
+.leader-ambient-light {
+    opacity: 0;
 }
 
 .leader-surface-texture {
