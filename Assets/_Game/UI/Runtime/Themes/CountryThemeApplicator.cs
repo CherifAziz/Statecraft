@@ -13,12 +13,15 @@ namespace Statecraft.UI.Themes
         public VisualElement Emblem { get; set; }
         public VisualElement PortraitFrame { get; set; }
         public VisualElement SurfaceTexture { get; set; }
+        public VerticalGradientElement IdentityGradient { get; set; }
+        public VerticalGradientElement EditorialBackdrop { get; set; }
         public IReadOnlyList<VisualElement> Surfaces { get; set; }
         public IReadOnlyList<VisualElement> Accents { get; set; }
         public IReadOnlyList<VisualElement> Ornaments { get; set; }
         public IReadOnlyList<VisualElement> Borders { get; set; }
         public IReadOnlyList<Label> PrimaryLabels { get; set; }
         public IReadOnlyList<Label> SecondaryLabels { get; set; }
+        public IReadOnlyList<Label> AccentLabels { get; set; }
         public IReadOnlyList<Button> Buttons { get; set; }
         public IReadOnlyList<LeaderSkillCard> SkillCards { get; set; }
     }
@@ -36,6 +39,12 @@ namespace Statecraft.UI.Themes
             SetArtwork(bindings.Emblem, theme.Emblem);
             SetArtwork(bindings.PortraitFrame, theme.PortraitFrame);
             SetTexture(bindings.SurfaceTexture, theme.SurfaceTexture);
+            bindings.IdentityGradient.SetColors(
+                WithAlpha(theme.BackgroundColor, 0f),
+                WithAlpha(theme.BackgroundColor, 0.94f));
+            bindings.EditorialBackdrop.SetColors(
+                WithAlpha(theme.BackgroundColor, 0.92f),
+                WithAlpha(theme.SurfaceColor, 0.86f));
 
             SetBackground(bindings.Surfaces, theme.SurfaceColor);
             SetBackground(bindings.Accents, theme.AccentColor);
@@ -59,13 +68,18 @@ namespace Statecraft.UI.Themes
                 label.style.color = theme.SecondaryTextColor;
             }
 
+            foreach (var label in bindings.AccentLabels)
+            {
+                label.style.color = theme.AccentColor;
+            }
+
             foreach (var button in bindings.Buttons)
             {
                 button.style.backgroundColor = Color.clear;
-                button.style.color = theme.SecondaryTextColor;
+                button.style.color = theme.PrimaryTextColor;
                 button.style.borderTopColor = theme.BorderColor;
                 button.style.borderRightColor = theme.BorderColor;
-                button.style.borderBottomColor = theme.BorderColor;
+                button.style.borderBottomColor = theme.AccentColor;
                 button.style.borderLeftColor = theme.BorderColor;
             }
 
@@ -95,6 +109,12 @@ namespace Statecraft.UI.Themes
             {
                 element.style.backgroundColor = color;
             }
+        }
+
+        private static Color WithAlpha(Color color, float alpha)
+        {
+            color.a = alpha;
+            return color;
         }
     }
 }

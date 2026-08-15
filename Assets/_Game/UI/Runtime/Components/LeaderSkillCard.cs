@@ -35,6 +35,7 @@ namespace Statecraft.UI.Components
     {
         private readonly VisualElement artwork;
         private readonly VisualElement accentLine;
+        private readonly VerticalGradientElement artworkShade;
         private readonly Label artworkPlaceholder;
         private readonly Label typeLabel;
         private readonly Label nameLabel;
@@ -50,21 +51,25 @@ namespace Statecraft.UI.Components
 
             artwork = UiFactory.Container("skill-artwork");
             artworkPlaceholder = UiFactory.Label("◇", "skill-artwork-placeholder");
+            artworkShade = new VerticalGradientElement("skill-artwork-shade");
             artwork.Add(artworkPlaceholder);
 
+            var artworkCopy = UiFactory.Container("skill-artwork-copy");
+            nameLabel = UiFactory.Label("Compétence", "skill-card-name");
             var header = UiFactory.Container("skill-card-header");
             typeLabel = UiFactory.Label("TYPE", "skill-type");
             stateLabel = UiFactory.Label("OUVERT", "skill-state");
             header.Add(typeLabel);
             header.Add(stateLabel);
+            artworkCopy.Add(nameLabel);
+            artworkCopy.Add(header);
+            artwork.Add(artworkShade);
+            artwork.Add(artworkCopy);
 
-            nameLabel = UiFactory.Label("Compétence", "skill-card-name");
             descriptionLabel = UiFactory.Label("Description", "skill-description");
             accentLine = UiFactory.Container("skill-accent-line");
 
             Add(artwork);
-            Add(header);
-            Add(nameLabel);
             Add(descriptionLabel);
             Add(accentLine);
 
@@ -82,9 +87,9 @@ namespace Statecraft.UI.Components
             SkillId = data.Id;
             IsLocked = data.IsLocked;
             typeLabel.text = data.Type.ToUpperInvariant();
-            nameLabel.text = data.DisplayName;
+            nameLabel.text = data.DisplayName.ToUpperInvariant();
             descriptionLabel.text = data.ShortDescription;
-            stateLabel.text = IsLocked ? "VERROUILLÉ" : "OUVERT";
+            stateLabel.text = IsLocked ? "◆  VERROUILLÉ" : "OUVERT";
             tooltip = data.ShortDescription;
             EnableInClassList("leader-skill-card--locked", IsLocked);
 
@@ -111,6 +116,7 @@ namespace Statecraft.UI.Components
             stateLabel.style.color = IsLocked ? theme.SecondaryTextColor : theme.AccentColor;
             artwork.style.backgroundColor = theme.PrimaryColor;
             artworkPlaceholder.style.color = theme.OrnamentColor;
+            artworkShade.SetColors(Color.clear, WithAlpha(theme.BackgroundColor, 0.96f));
             RefreshVisualState();
         }
 
@@ -144,15 +150,21 @@ namespace Statecraft.UI.Components
             }
 
             var emphasized = isSelected || isHovered;
-            var border = emphasized ? theme.AccentColor : theme.BorderColor;
+            var border = emphasized
+                ? WithAlpha(theme.AccentColor, isSelected ? 1f : 0.82f)
+                : WithAlpha(theme.BorderColor, 0.48f);
             style.borderTopColor = border;
             style.borderRightColor = border;
             style.borderBottomColor = border;
             style.borderLeftColor = border;
-            style.backgroundColor = emphasized
-                ? Color.Lerp(theme.SurfaceColor, theme.AccentColor, isSelected ? 0.14f : 0.08f)
-                : WithAlpha(theme.SurfaceColor, 0.46f);
+            var surface = emphasized
+                ? Color.Lerp(theme.SurfaceColor, theme.AccentColor, isSelected ? 0.12f : 0.06f)
+                : theme.SurfaceColor;
+            style.backgroundColor = WithAlpha(surface, isSelected ? 0.78f : isHovered ? 0.68f : 0.5f);
             accentLine.style.backgroundColor = emphasized ? theme.AccentColor : theme.OrnamentColor;
+            artwork.style.unityBackgroundImageTintColor = IsLocked
+                ? new Color(0.54f, 0.54f, 0.54f, 1f)
+                : emphasized ? Color.white : new Color(0.91f, 0.91f, 0.91f, 1f);
         }
 
         private static Color WithAlpha(Color color, float alpha)

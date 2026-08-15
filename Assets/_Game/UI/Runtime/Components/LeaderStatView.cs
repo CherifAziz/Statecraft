@@ -7,12 +7,19 @@ namespace Statecraft.UI.Components
     {
         private readonly Label valueLabel;
         private readonly Label nameLabel;
+        private readonly Label iconLabel;
         private readonly VisualElement fill;
+        private readonly VisualElement iconFrame;
 
-        public LeaderStatView(string statName)
+        public LeaderStatView(string statName, string icon)
         {
             AddToClassList("stat-row");
 
+            iconFrame = UiFactory.Container("stat-icon-frame");
+            iconLabel = UiFactory.Label(icon, "stat-icon");
+            iconFrame.Add(iconLabel);
+
+            var body = UiFactory.Container("stat-body");
             var heading = UiFactory.Container("stat-heading");
             nameLabel = UiFactory.Label(statName.ToUpperInvariant(), "stat-name");
             heading.Add(nameLabel);
@@ -23,13 +30,17 @@ namespace Statecraft.UI.Components
             fill = UiFactory.Container("stat-fill");
             track.Add(fill);
 
-            Add(heading);
-            Add(track);
+            body.Add(heading);
+            body.Add(track);
+            Add(iconFrame);
+            Add(body);
         }
 
         public VisualElement Fill => fill;
         public Label ValueLabel => valueLabel;
         public Label NameLabel => nameLabel;
+        public Label IconLabel => iconLabel;
+        public VisualElement IconFrame => iconFrame;
 
         public void SetValue(int value)
         {
