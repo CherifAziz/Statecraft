@@ -1,8 +1,19 @@
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Statecraft.UI.Themes
 {
+    [Serializable]
+    public sealed class LeaderSkillArtworkBinding
+    {
+        [SerializeField] private string skillId = string.Empty;
+        [SerializeField] private Sprite artwork = null;
+
+        public string SkillId => skillId;
+        public Sprite Artwork => artwork;
+    }
+
     [CreateAssetMenu(fileName = "CountryTheme", menuName = "Statecraft/UI/Country Theme")]
     public sealed class CountryTheme : ScriptableObject
     {
@@ -25,6 +36,9 @@ namespace Statecraft.UI.Themes
         [SerializeField] private Sprite emblem = null;
         [SerializeField] private Sprite portraitFrame = null;
         [SerializeField] private Texture2D surfaceTexture = null;
+
+        [Header("Optional Leader Skill art")]
+        [SerializeField] private LeaderSkillArtworkBinding[] leaderSkillArtworks = Array.Empty<LeaderSkillArtworkBinding>();
 
         [Header("Optional Leader Background FX")]
         [SerializeField] private bool leaderBackgroundFxEnabled = false;
@@ -65,6 +79,24 @@ namespace Statecraft.UI.Themes
         public string TransitionStyleIdentifier => transitionStyleIdentifier;
         public AudioClip Ambience => ambience;
         public AudioClip TransitionSound => transitionSound;
+
+        public Sprite GetLeaderSkillArtwork(string skillId)
+        {
+            if (leaderSkillArtworks == null)
+            {
+                return null;
+            }
+
+            foreach (var binding in leaderSkillArtworks)
+            {
+                if (binding != null && string.Equals(binding.SkillId, skillId, StringComparison.Ordinal))
+                {
+                    return binding.Artwork;
+                }
+            }
+
+            return null;
+        }
 
 #if UNITY_EDITOR
         public void Configure(

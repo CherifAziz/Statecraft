@@ -22,10 +22,19 @@ MonoBehaviour:
   borderColor: {r: 0.4588235, g: 0.3803922, b: 0.2313726, a: 1}
   ornamentColor: {r: 0.8313726, g: 0.7137255, b: 0.427451, a: 1}
   leaderBackgroundArtwork: {fileID: 21300000, guid: a651f1b62466481f845fc4343921c46d, type: 3}
-  leaderForegroundOverlay: {fileID: 0}
-  emblem: {fileID: 0}
-  portraitFrame: {fileID: 0}
-  surfaceTexture: {fileID: 0}
+  leaderForegroundOverlay: {fileID: 21300000, guid: c106c0de000000000000000000000006, type: 3}
+  emblem: {fileID: 21300000, guid: c103c0de000000000000000000000003, type: 3}
+  portraitFrame: {fileID: 21300000, guid: c104c0de000000000000000000000004, type: 3}
+  surfaceTexture: {fileID: 2800000, guid: c105c0de000000000000000000000005, type: 3}
+  leaderSkillArtworks:
+  - skillId: executive-mandate
+    artwork: {fileID: 21300000, guid: c111c0de000000000000000000000011, type: 3}
+  - skillId: state-address
+    artwork: {fileID: 21300000, guid: c112c0de000000000000000000000012, type: 3}
+  - skillId: inner-council
+    artwork: {fileID: 21300000, guid: c113c0de000000000000000000000013, type: 3}
+  - skillId: legacy-doctrine
+    artwork: {fileID: 21300000, guid: c114c0de000000000000000000000014, type: 3}
   leaderBackgroundFxEnabled: 1
   leaderParallaxStrength: 2.5
   leaderDriftStrength: 1.5

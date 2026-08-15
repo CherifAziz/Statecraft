@@ -26,6 +26,7 @@ MonoBehaviour:
   emblem: {fileID: 0}
   portraitFrame: {fileID: 0}
   surfaceTexture: {fileID: 0}
+  leaderSkillArtworks: []
   leaderBackgroundFxEnabled: 0
   leaderParallaxStrength: 0
   leaderDriftStrength: 0

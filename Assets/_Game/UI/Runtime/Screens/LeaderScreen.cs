@@ -194,6 +194,12 @@ namespace Statecraft.UI.Screens
             statViews["Economy"].SetValue(stats.economy);
             statViews["Eloquence"].SetValue(stats.eloquence);
 
+            var skillData = CreateDemoSkills(country.Theme);
+            for (var index = 0; index < skillCards.Count; index++)
+            {
+                skillCards[index].Bind(skillData[index]);
+            }
+
             var accents = new List<VisualElement> { countryRule, statsDivider, skillsDivider };
             foreach (var statView in statViews.Values)
             {
@@ -258,14 +264,14 @@ namespace Statecraft.UI.Screens
             return layer;
         }
 
-        private static IReadOnlyList<LeaderSkillCardData> CreateDemoSkills()
+        private static IReadOnlyList<LeaderSkillCardData> CreateDemoSkills(CountryTheme theme = null)
         {
             return new[]
             {
-                new LeaderSkillCardData("executive-mandate", "Mandat exécutif", "Passif", "Renforce la présence institutionnelle du dirigeant."),
-                new LeaderSkillCardData("state-address", "Adresse à la nation", "Influence", "Structure les prises de parole destinées à l'opinion publique."),
-                new LeaderSkillCardData("inner-council", "Conseil restreint", "Stratégie", "Prépare les arbitrages sensibles au plus haut niveau de l'État."),
-                new LeaderSkillCardData("legacy-doctrine", "Doctrine d'héritage", "Signature", "Un emplacement réservé à une doctrine de mandat future.", isLocked: true)
+                new LeaderSkillCardData("executive-mandate", "Mandat exécutif", "Passif", "Renforce la présence institutionnelle du dirigeant.", theme?.GetLeaderSkillArtwork("executive-mandate")),
+                new LeaderSkillCardData("state-address", "Adresse à la nation", "Influence", "Structure les prises de parole destinées à l'opinion publique.", theme?.GetLeaderSkillArtwork("state-address")),
+                new LeaderSkillCardData("inner-council", "Conseil restreint", "Stratégie", "Prépare les arbitrages sensibles au plus haut niveau de l'État.", theme?.GetLeaderSkillArtwork("inner-council")),
+                new LeaderSkillCardData("legacy-doctrine", "Doctrine d'héritage", "Signature", "Un emplacement réservé à une doctrine de mandat future.", theme?.GetLeaderSkillArtwork("legacy-doctrine"), isLocked: true)
             };
         }
 
