@@ -475,8 +475,8 @@
     flex-grow: 1;
     padding-left: 44px;
     padding-right: 44px;
-    padding-top: 30px;
-    padding-bottom: 28px;
+    padding-top: 16px;
+    padding-bottom: 8px;
 }
 
 .leader-stats-section,
@@ -492,7 +492,7 @@
 }
 
 .editorial-title {
-    margin-top: 7px;
+    margin-top: 4px;
     letter-spacing: 0.35px;
     -unity-font-style: normal;
 }
@@ -506,8 +506,8 @@
 }
 
 .editorial-title-rule {
-    height: 10px;
-    margin-top: 8px;
+    height: 8px;
+    margin-top: 4px;
 }
 
 .editorial-heading--stats .editorial-title-rule {
@@ -533,8 +533,8 @@
     width: 100%;
     height: 1px;
     flex-shrink: 0;
-    margin-top: 22px;
-    margin-bottom: 18px;
+    margin-top: 6px;
+    margin-bottom: 6px;
     opacity: 0.28;
 }
 
@@ -543,25 +543,25 @@
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding-top: 2px;
+    padding-top: 0;
 }
 
 .stat-row {
-    width: 47.8%;
-    min-height: 61px;
-    margin-top: 21px;
+    width: 48%;
+    min-height: 80px;
+    margin-top: 4px;
     flex-direction: row;
     align-items: center;
 }
 
 .stat-icon-frame {
     position: relative;
-    width: 42px;
-    height: 42px;
+    width: 62px;
+    height: 62px;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
-    margin-right: 17px;
+    margin-right: 20px;
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
@@ -607,37 +607,37 @@
 }
 
 .stat-name {
-    font-size: 11px;
-    letter-spacing: 1.5px;
+    font-size: 14px;
+    letter-spacing: 1.2px;
     opacity: 0.98;
     -unity-font-style: normal;
 }
 
 .stat-value {
-    width: 32px;
-    font-size: 17px;
+    width: 40px;
+    font-size: 20px;
     opacity: 1;
     -unity-text-align: middle-right;
     -unity-font-style: normal;
 }
 
 .stat-track {
-    height: 4px;
+    height: 6px;
     overflow: visible;
     background-color: rgba(255, 255, 255, 0.13);
 }
 
 .stat-fill {
     position: relative;
-    height: 4px;
+    height: 6px;
 }
 
 .stat-marker {
     position: absolute;
-    right: -4px;
-    top: -2px;
-    width: 8px;
-    height: 8px;
+    right: -6px;
+    top: -3px;
+    width: 12px;
+    height: 12px;
     rotate: 45deg;
 }
 
@@ -645,13 +645,13 @@
 .leader-skill-grid {
     flex-direction: row;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 4px;
 }
 
 .leader-skill-card {
     position: relative;
     width: 23.7%;
-    height: 350px;
+    height: 430px;
     flex-shrink: 0;
     align-items: stretch;
     padding: 4px;
@@ -689,7 +689,7 @@
 
 .skill-artwork {
     position: relative;
-    height: 180px;
+    height: 210px;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
@@ -741,15 +741,16 @@
 
 .skill-card-body {
     flex-grow: 1;
-    padding-left: 14px;
-    padding-right: 14px;
-    padding-top: 15px;
-    padding-bottom: 12px;
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-top: 18px;
+    padding-bottom: 16px;
 }
 
 .skill-card-name {
-    min-height: 31px;
-    font-size: 17px;
+    min-height: 42px;
+    flex-shrink: 0;
+    font-size: 22px;
     letter-spacing: 0.2px;
     white-space: normal;
     -unity-font-style: normal;
@@ -757,22 +758,25 @@
 
 .skill-card-header {
     flex-direction: row;
+    flex-shrink: 0;
     justify-content: space-between;
-    margin-top: 9px;
+    margin-top: 10px;
 }
 
 .skill-type,
 .skill-state {
-    font-size: 11px;
-    letter-spacing: 0.9px;
+    flex-shrink: 0;
+    font-size: 13px;
+    letter-spacing: 0.7px;
     opacity: 0.98;
     -unity-font-style: normal;
 }
 
 .skill-description {
-    height: 48px;
-    margin-top: 12px;
-    font-size: 12px;
+    height: 60px;
+    flex-shrink: 0;
+    margin-top: 13px;
+    font-size: 15px;
     white-space: normal;
     overflow: hidden;
     opacity: 0.92;
@@ -786,7 +790,8 @@
 .skill-accent-line {
     width: 34px;
     height: 1px;
-    margin-top: 8px;
+    margin-top: 10px;
+    flex-shrink: 0;
     transition-property: width, background-color;
     transition-duration: 180ms;
     transition-timing-function: ease-out;
