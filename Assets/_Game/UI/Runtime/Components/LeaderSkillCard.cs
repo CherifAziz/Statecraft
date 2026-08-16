@@ -191,9 +191,9 @@ namespace Statecraft.UI.Components
             style.borderBottomColor = border;
             style.borderLeftColor = border;
             var surface = emphasized
-                ? Color.Lerp(theme.BackgroundColor, theme.AccentColor, isSelected ? 0.07f : 0.025f)
+                ? Color.Lerp(theme.BackgroundColor, theme.AccentColor, isSelected ? 0.055f : 0.025f)
                 : theme.BackgroundColor;
-            style.backgroundColor = WithAlpha(surface, isSelected ? 0.94f : isHovered ? 0.82f : 0.74f);
+            style.backgroundColor = WithAlpha(surface, isSelected ? 0.9f : isHovered ? 0.82f : 0.74f);
             accentLine.style.backgroundColor = emphasized ? theme.AccentColor : theme.OrnamentColor;
             artwork.style.unityBackgroundImageTintColor = IsLocked
                 ? new Color(0.48f, 0.48f, 0.48f, 1f)
