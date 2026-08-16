@@ -14,6 +14,7 @@ namespace Statecraft.Core
         private const string LeaderStyleResourcePath = "UI/LeaderScreen";
         private const string RuntimeThemeResourcePath = "UI/StatecraftTheme";
         private const string TypographyResourcePath = "UI/StatecraftTypography";
+        private const string PanelSettingsResourcePath = "UI/StatecraftPanelSettings";
 
         private PanelSettings panelSettings;
         private UIDocument document;
@@ -33,7 +34,14 @@ namespace Statecraft.Core
 
         private void ConfigureDocument()
         {
-            panelSettings = ScriptableObject.CreateInstance<PanelSettings>();
+            var panelSettingsTemplate = Resources.Load<PanelSettings>(PanelSettingsResourcePath);
+            if (panelSettingsTemplate == null)
+            {
+                Debug.LogError($"Missing panel settings at Resources/{PanelSettingsResourcePath}.asset.");
+                return;
+            }
+
+            panelSettings = Instantiate(panelSettingsTemplate);
             panelSettings.name = "Statecraft Runtime Panel Settings";
             panelSettings.scaleMode = PanelScaleMode.ScaleWithScreenSize;
             panelSettings.referenceResolution = new Vector2Int(1920, 1080);

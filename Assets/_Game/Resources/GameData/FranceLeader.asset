@@ -23,3 +23,24 @@ MonoBehaviour:
     strategy: 81
     economy: 75
     eloquence: 89
+  skills:
+  - id: executive-mandate
+    displayName: Mandat exécutif
+    type: Passif
+    shortDescription: Renforce la présence institutionnelle et la stabilité intérieure.
+    isLocked: 0
+  - id: state-address
+    displayName: Adresse à la nation
+    type: Influence
+    shortDescription: Structure les prises de parole et renforce l'adhésion publique.
+    isLocked: 0
+  - id: inner-council
+    displayName: Conseil restreint
+    type: Stratégie
+    shortDescription: Prépare les arbitrages sensibles au plus haut niveau de l'État.
+    isLocked: 0
+  - id: legacy-doctrine
+    displayName: Doctrine d'héritage
+    type: Signature
+    shortDescription: Emplacement réservé à une doctrine de mandat future.
+    isLocked: 1

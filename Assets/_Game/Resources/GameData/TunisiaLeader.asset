@@ -13,13 +13,34 @@ MonoBehaviour:
   m_Name: TunisiaLeader
   m_EditorClassIdentifier: Assembly-CSharp::Statecraft.Data.LeaderDefinition
   id: tn-leader-01
-  displayName: Amine Ben Salem
+  displayName: Kaïs Saïed
   title: Président de la République
-  portrait: {fileID: 0}
+  portrait: {fileID: 21300000, guid: b935ea97afd4a1c48b81d7d404eed4a8, type: 3}
   stats:
-    charisma: 82
-    diplomacy: 74
-    authority: 79
-    strategy: 76
-    economy: 71
-    eloquence: 84
+    charisma: 76
+    diplomacy: 72
+    authority: 88
+    strategy: 79
+    economy: 68
+    eloquence: 86
+  skills:
+  - id: address-the-people
+    displayName: Adresse au peuple
+    type: Influence
+    shortDescription: Porte la parole de l'État et rassemble autour des priorités nationales.
+    isLocked: 0
+  - id: carthaginian-heritage
+    displayName: Héritage carthaginois
+    type: Passif
+    shortDescription: Ancre l'autorité dans une mémoire millénaire et nourrit la cohésion nationale.
+    isLocked: 0
+  - id: maritime-power
+    displayName: Puissance maritime
+    type: Stratégie
+    shortDescription: Valorise l'ouverture méditerranéenne et les leviers d'influence du littoral.
+    isLocked: 0
+  - id: sovereign-council
+    displayName: Conseil souverain
+    type: Signature
+    shortDescription: Réunit l'expertise institutionnelle pour éclairer les décisions décisives.
+    isLocked: 0

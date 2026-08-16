@@ -37,9 +37,9 @@ namespace Statecraft.Editor
 
             var tunisiaTheme = CreateOrLoad<CountryTheme>(Root + "/TunisiaTheme.asset");
             tunisiaTheme.Configure(
-                Html("#7D0D20"), Html("#EFE4D1"), Html("#B97845"), Html("#24070C"),
-                Html("#3A0B14"), Html("#FFF3DE"), Html("#D4BFA9"), Html("#8E4A38"),
-                Html("#C88B57"), "carthage-mediterranee", "mosaic-reveal");
+                Html("#0D171C"), Html("#8F1628"), Html("#C9924F"), Html("#080D11"),
+                Html("#121B1D"), Html("#F2E8D3"), Html("#C1B29A"), Html("#7A5735"),
+                Html("#C69B5D"), "carthage-mediterranee", "mosaic-reveal");
 
             var franceLeader = CreateOrLoad<LeaderDefinition>(Root + "/FranceLeader.asset");
             franceLeader.Configure("fr-leader-01", "Emmanuel Macron", "Président de la République", new LeaderStats
@@ -50,17 +50,29 @@ namespace Statecraft.Editor
                 strategy = 81,
                 economy = 75,
                 eloquence = 89
+            }, new[]
+            {
+                new LeaderSkillDefinition("executive-mandate", "Mandat exécutif", "Passif", "Renforce la présence institutionnelle et la stabilité intérieure."),
+                new LeaderSkillDefinition("state-address", "Adresse à la nation", "Influence", "Structure les prises de parole et renforce l'adhésion publique."),
+                new LeaderSkillDefinition("inner-council", "Conseil restreint", "Stratégie", "Prépare les arbitrages sensibles au plus haut niveau de l'État."),
+                new LeaderSkillDefinition("legacy-doctrine", "Doctrine d'héritage", "Signature", "Emplacement réservé à une doctrine de mandat future.", true)
             });
 
             var tunisiaLeader = CreateOrLoad<LeaderDefinition>(Root + "/TunisiaLeader.asset");
-            tunisiaLeader.Configure("tn-leader-01", "Amine Ben Salem", "Président de la République", new LeaderStats
+            tunisiaLeader.Configure("tn-leader-01", "Kaïs Saïed", "Président de la République", new LeaderStats
             {
-                charisma = 82,
-                diplomacy = 74,
-                authority = 79,
-                strategy = 76,
-                economy = 71,
-                eloquence = 84
+                charisma = 76,
+                diplomacy = 72,
+                authority = 88,
+                strategy = 79,
+                economy = 68,
+                eloquence = 86
+            }, new[]
+            {
+                new LeaderSkillDefinition("address-the-people", "Adresse au peuple", "Influence", "Porte la parole de l'État et rassemble autour des priorités nationales."),
+                new LeaderSkillDefinition("carthaginian-heritage", "Héritage carthaginois", "Passif", "Ancre l'autorité dans une mémoire millénaire et nourrit la cohésion nationale."),
+                new LeaderSkillDefinition("maritime-power", "Puissance maritime", "Stratégie", "Valorise l'ouverture méditerranéenne et les leviers d'influence du littoral."),
+                new LeaderSkillDefinition("sovereign-council", "Conseil souverain", "Signature", "Réunit l'expertise institutionnelle pour éclairer les décisions décisives.")
             });
 
             var france = CreateOrLoad<CountryDefinition>(Root + "/France.asset");

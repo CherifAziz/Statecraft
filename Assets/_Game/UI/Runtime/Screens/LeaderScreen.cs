@@ -152,11 +152,10 @@ namespace Statecraft.UI.Screens
                 "editorial-heading--skills"));
 
             var skillGrid = UiFactory.Container("leader-skill-grid");
-            foreach (var skill in CreateDemoSkills())
+            for (var index = 0; index < LeaderDefinition.SkillSlotCount; index++)
             {
                 var card = new LeaderSkillCard();
                 card.ApplyTypography(typography);
-                card.Bind(skill);
                 card.Selected += SelectSkillCard;
                 skillCards.Add(card);
                 skillGrid.Add(card);
@@ -207,10 +206,9 @@ namespace Statecraft.UI.Screens
             BindStat(theme, "economy", stats.economy);
             BindStat(theme, "eloquence", stats.eloquence);
 
-            var skillData = CreateDemoSkills(theme);
             for (var index = 0; index < skillCards.Count; index++)
             {
-                skillCards[index].Bind(skillData[index]);
+                skillCards[index].Bind(CreateSkillCardData(leader, theme, index));
             }
 
             CountryThemeApplicator.Apply(theme, new CountryThemeBindings
@@ -405,15 +403,29 @@ namespace Statecraft.UI.Screens
             return layer;
         }
 
-        private static IReadOnlyList<LeaderSkillCardData> CreateDemoSkills(CountryTheme theme = null)
+        private static LeaderSkillCardData CreateSkillCardData(
+            LeaderDefinition leader,
+            CountryTheme theme,
+            int index)
         {
-            return new[]
+            if (leader.Skills == null || index < 0 || index >= leader.Skills.Count || leader.Skills[index] == null)
             {
-                new LeaderSkillCardData("executive-mandate", "Mandat exécutif", "Passif", "Renforce la présence institutionnelle et la stabilité intérieure.", theme?.GetLeaderSkillArtwork("executive-mandate")),
-                new LeaderSkillCardData("state-address", "Adresse à la nation", "Influence", "Structure les prises de parole et renforce l'adhésion publique.", theme?.GetLeaderSkillArtwork("state-address")),
-                new LeaderSkillCardData("inner-council", "Conseil restreint", "Stratégie", "Prépare les arbitrages sensibles au plus haut niveau de l'État.", theme?.GetLeaderSkillArtwork("inner-council")),
-                new LeaderSkillCardData("legacy-doctrine", "Doctrine d'héritage", "Signature", "Emplacement réservé à une doctrine de mandat future.", theme?.GetLeaderSkillArtwork("legacy-doctrine"), isLocked: true)
-            };
+                return new LeaderSkillCardData(
+                    $"unavailable-skill-{index}",
+                    "Compétence indisponible",
+                    "Indisponible",
+                    "Cette compétence n'est pas encore renseignée.",
+                    isLocked: true);
+            }
+
+            var skill = leader.Skills[index];
+            return new LeaderSkillCardData(
+                skill.Id,
+                skill.DisplayName,
+                skill.Type,
+                skill.ShortDescription,
+                theme.GetLeaderSkillArtwork(skill.Id),
+                skill.IsLocked);
         }
 
         private static string GetMonogram(string displayName)
