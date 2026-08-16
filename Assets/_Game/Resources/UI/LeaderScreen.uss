@@ -763,16 +763,16 @@
 
 .skill-type,
 .skill-state {
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 1px;
     opacity: 0.98;
     -unity-font-style: normal;
 }
 
 .skill-description {
-    height: 43px;
+    height: 48px;
     margin-top: 11px;
-    font-size: 11px;
+    font-size: 12px;
     white-space: normal;
     overflow: hidden;
     opacity: 0.92;
