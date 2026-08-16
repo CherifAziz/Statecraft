@@ -4,6 +4,7 @@ using System.Globalization;
 using Statecraft.Data;
 using Statecraft.UI.Components;
 using Statecraft.UI.Themes;
+using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Statecraft.UI.Screens
@@ -12,6 +13,7 @@ namespace Statecraft.UI.Screens
     {
         private static readonly CultureInfo DisplayCulture = CultureInfo.GetCultureInfo("fr-FR");
 
+        private readonly StatecraftTypography typography;
         private readonly Label countryName;
         private readonly Label countryMetadata;
         private readonly Label countryEmblemFallback;
@@ -24,27 +26,33 @@ namespace Statecraft.UI.Screens
         private readonly VisualElement editorialSurfaceTexture;
         private readonly VisualElement foregroundOverlay;
         private readonly VisualElement countryEmblem;
-        private readonly VisualElement portraitStage;
         private readonly VisualElement portraitArtwork;
         private readonly VisualElement portraitFrame;
         private readonly VisualElement portraitOrnament;
-        private readonly VisualElement editorialPanel;
         private readonly VerticalGradientElement identityGradient;
         private readonly VerticalGradientElement editorialBackdrop;
+        private readonly LeaderDivider identityOrnament;
         private readonly Button backButton;
         private readonly Dictionary<string, LeaderStatView> statViews = new();
         private readonly List<LeaderSkillCard> skillCards = new();
+        private readonly List<LeaderDivider> dividers = new();
+        private readonly List<LeaderCornerSet> cornerSets = new();
         private readonly List<Label> primaryLabels = new();
         private readonly List<Label> secondaryLabels = new();
         private readonly List<Label> accentLabels = new();
         private readonly List<Label> prestigeLabels = new();
+        private readonly List<Label> prestigeStrongLabels = new();
+        private readonly List<Label> utilityRegularLabels = new();
+        private readonly List<Label> utilityMediumLabels = new();
+        private readonly List<Label> utilitySemiboldLabels = new();
         private readonly List<VisualElement> accentElements = new();
         private readonly List<VisualElement> themedBorders = new();
         private readonly LeaderBackgroundFx backgroundFx;
         private int portraitRevealVersion;
 
-        public LeaderScreen(Action back)
+        public LeaderScreen(Action back, StatecraftTypography typography)
         {
+            this.typography = typography;
             name = "leader-screen";
             AddToClassList("screen");
             AddToClassList("leader-screen");
@@ -59,20 +67,20 @@ namespace Statecraft.UI.Screens
             var headerContent = UiFactory.Container("leader-header-content");
             var countryIdentity = UiFactory.Container("leader-country-identity");
             countryEmblem = UiFactory.Container("leader-emblem");
-            countryEmblemFallback = TrackSecondary(UiFactory.Label("—", "leader-emblem-fallback"));
+            countryEmblemFallback = UtilityMedium(TrackSecondary(UiFactory.Label("—", "leader-emblem-fallback")));
             countryEmblem.Add(countryEmblemFallback);
 
             var countrySeparator = Accent("leader-country-separator");
             var countryCopy = UiFactory.Container("leader-country-copy");
-            countryName = TrackPrestigePrimary(UiFactory.Label("COUNTRY", "leader-country-name"));
-            countryMetadata = TrackSecondary(UiFactory.Label("CAPITAL • POPULATION • GDP", "leader-country-meta"));
+            countryName = TrackPrestigeStrongPrimary(UiFactory.Label("COUNTRY", "leader-country-name"));
+            countryMetadata = UtilityRegular(TrackSecondary(UiFactory.Label("CAPITAL • POPULATION • GDP", "leader-country-meta")));
             countryCopy.Add(countryName);
             countryCopy.Add(countryMetadata);
             countryIdentity.Add(countryEmblem);
             countryIdentity.Add(countrySeparator);
             countryIdentity.Add(countryCopy);
 
-            var countryRule = CreateSplitRule("leader-country-rule");
+            var countryRule = CreateDivider("leader-country-rule");
             backButton = UiFactory.Button("←  CARTE DU MONDE", back, "back-button");
             headerContent.Add(countryIdentity);
             headerContent.Add(countryRule);
@@ -81,11 +89,11 @@ namespace Statecraft.UI.Screens
 
             var stage = UiFactory.Container("leader-stage");
             var visualColumn = UiFactory.Container("leader-visual-column");
-            portraitStage = UiFactory.Container("portrait-stage");
+            var portraitStage = UiFactory.Container("portrait-stage");
             portraitArtwork = Layer("portrait-artwork");
             portraitOrnament = Layer("portrait-ornament");
             portraitFrame = Layer("portrait-frame");
-            portraitMonogram = TrackPrimary(UiFactory.Label("—", "portrait-monogram"));
+            portraitMonogram = TrackPrestigeStrongPrimary(UiFactory.Label("—", "portrait-monogram"));
 
             portraitStage.Add(portraitArtwork);
             portraitStage.Add(portraitOrnament);
@@ -94,27 +102,31 @@ namespace Statecraft.UI.Screens
 
             var leaderIdentity = UiFactory.Container("leader-identity");
             identityGradient = new VerticalGradientElement("leader-identity-gradient");
-            var identitySeparator = CreateSplitRule("leader-identity-separator");
+            identityOrnament = new LeaderDivider("leader-identity-ornament");
             var identityCopy = UiFactory.Container("leader-identity-copy");
-            leaderName = TrackPrestigePrimary(UiFactory.Label("LEADER", "leader-name"));
+            leaderName = TrackPrestigeStrongPrimary(UiFactory.Label("LEADER", "leader-name"));
             leaderTitle = TrackPrestigeAccent(UiFactory.Label("Title", "leader-title"));
-            var leaderFunction = TrackSecondary(UiFactory.Label("CHEF D'ÉTAT", "leader-function"));
+            var leaderFunction = UtilitySemibold(TrackSecondary(UiFactory.Label("CHEF D'ÉTAT", "leader-function")));
             identityCopy.Add(leaderName);
             identityCopy.Add(leaderTitle);
             identityCopy.Add(leaderFunction);
             leaderIdentity.Add(identityGradient);
-            leaderIdentity.Add(identitySeparator);
+            leaderIdentity.Add(identityOrnament);
             leaderIdentity.Add(identityCopy);
+            var heroCorners = new LeaderCornerSet("leader-corner-set--hero");
+            cornerSets.Add(heroCorners);
+            portraitStage.Add(heroCorners);
             portraitStage.Add(leaderIdentity);
-            AddCornerOrnaments(portraitStage, "hero-corner");
             visualColumn.Add(portraitStage);
 
-            editorialPanel = UiFactory.Container("leader-editorial-panel");
+            var editorialPanel = UiFactory.Container("leader-editorial-panel");
             editorialBackdrop = new VerticalGradientElement("leader-editorial-backdrop");
             editorialSurfaceTexture = Layer("leader-editorial-texture");
             editorialPanel.Add(editorialBackdrop);
             editorialPanel.Add(editorialSurfaceTexture);
-            AddCornerOrnaments(editorialPanel, "panel-corner");
+            var panelCorners = new LeaderCornerSet("leader-corner-set--panel");
+            cornerSets.Add(panelCorners);
+            editorialPanel.Add(panelCorners);
             var editorialContent = UiFactory.Container("leader-editorial-content");
 
             var statsSection = UiFactory.Container("leader-stats-section");
@@ -124,12 +136,12 @@ namespace Statecraft.UI.Screens
                 "editorial-heading--stats"));
 
             var statsGrid = UiFactory.Container("stats-grid");
-            AddStat(statsGrid, "Charisma", "Charisme", "CH");
-            AddStat(statsGrid, "Diplomacy", "Diplomatie", "DI");
-            AddStat(statsGrid, "Authority", "Autorité", "AU");
-            AddStat(statsGrid, "Strategy", "Stratégie", "ST");
-            AddStat(statsGrid, "Economy", "Économie", "ÉC");
-            AddStat(statsGrid, "Eloquence", "Éloquence", "ÉL");
+            AddStat(statsGrid, "charisma", "Charisme", "CH");
+            AddStat(statsGrid, "diplomacy", "Diplomatie", "DI");
+            AddStat(statsGrid, "authority", "Autorité", "AU");
+            AddStat(statsGrid, "strategy", "Stratégie", "ST");
+            AddStat(statsGrid, "economy", "Économie", "ÉC");
+            AddStat(statsGrid, "eloquence", "Éloquence", "ÉL");
             statsSection.Add(statsGrid);
 
             var sectionDivider = Accent("editorial-section-divider");
@@ -143,6 +155,7 @@ namespace Statecraft.UI.Screens
             foreach (var skill in CreateDemoSkills())
             {
                 var card = new LeaderSkillCard();
+                card.ApplyTypography(typography);
                 card.Bind(skill);
                 card.Selected += SelectSkillCard;
                 skillCards.Add(card);
@@ -157,7 +170,6 @@ namespace Statecraft.UI.Screens
             stage.Add(visualColumn);
             stage.Add(editorialPanel);
 
-            themedBorders.Add(portraitStage);
             themedBorders.Add(editorialPanel);
 
             Add(backgroundArtwork);
@@ -166,12 +178,15 @@ namespace Statecraft.UI.Screens
             Add(foregroundOverlay);
             Add(header);
             Add(stage);
+
+            ApplyUtilityTypography();
         }
 
         public void Bind(CountryDefinition country)
         {
             portraitRevealVersion++;
             var leader = country.Leader;
+            var theme = country.Theme;
             countryName.text = country.DisplayName.ToUpperInvariant();
             countryMetadata.text = $"{country.Capital.ToUpperInvariant()}  •  {FormatPopulation(country.Population)} HAB.  •  {FormatGdp(country.GdpUsd)} PIB";
             countryEmblemFallback.text = country.VisualIdentifier;
@@ -180,25 +195,25 @@ namespace Statecraft.UI.Screens
             portraitMonogram.text = GetMonogram(leader.DisplayName);
 
             BindPortrait(leader);
-            countryEmblemFallback.style.display = country.Theme.Emblem == null
+            countryEmblemFallback.style.display = theme.Emblem == null
                 ? DisplayStyle.Flex
                 : DisplayStyle.None;
 
             var stats = leader.Stats;
-            statViews["Charisma"].SetValue(stats.charisma);
-            statViews["Diplomacy"].SetValue(stats.diplomacy);
-            statViews["Authority"].SetValue(stats.authority);
-            statViews["Strategy"].SetValue(stats.strategy);
-            statViews["Economy"].SetValue(stats.economy);
-            statViews["Eloquence"].SetValue(stats.eloquence);
+            BindStat(theme, "charisma", stats.charisma);
+            BindStat(theme, "diplomacy", stats.diplomacy);
+            BindStat(theme, "authority", stats.authority);
+            BindStat(theme, "strategy", stats.strategy);
+            BindStat(theme, "economy", stats.economy);
+            BindStat(theme, "eloquence", stats.eloquence);
 
-            var skillData = CreateDemoSkills(country.Theme);
+            var skillData = CreateDemoSkills(theme);
             for (var index = 0; index < skillCards.Count; index++)
             {
                 skillCards[index].Bind(skillData[index]);
             }
 
-            CountryThemeApplicator.Apply(country.Theme, new CountryThemeBindings
+            CountryThemeApplicator.Apply(theme, new CountryThemeBindings
             {
                 Root = this,
                 BackgroundArtwork = backgroundArtwork,
@@ -217,10 +232,16 @@ namespace Statecraft.UI.Screens
                 SecondaryLabels = secondaryLabels,
                 AccentLabels = accentLabels,
                 PrestigeLabels = prestigeLabels,
+                PrestigeStrongLabels = prestigeStrongLabels,
+                PrestigeFallbackFont = typography != null ? typography.UtilityMedium : null,
+                PrestigeStrongFallbackFont = typography != null ? typography.UtilitySemibold : null,
+                Dividers = dividers,
+                IdentityOrnament = identityOrnament,
+                CornerSets = cornerSets,
                 Buttons = new[] { backButton },
                 SkillCards = skillCards
             });
-            backgroundFx.Apply(country.Theme);
+            backgroundFx.Apply(theme);
 
             SelectSkillCard(skillCards[0]);
         }
@@ -229,9 +250,9 @@ namespace Statecraft.UI.Screens
         {
             var heading = UiFactory.Container("editorial-heading");
             heading.AddToClassList(modifierClass);
-            heading.Add(TrackAccent(UiFactory.Label(eyebrow, "eyebrow")));
-            heading.Add(TrackPrestigePrimary(UiFactory.Label(title, "editorial-title")));
-            heading.Add(CreateSplitRule("editorial-title-rule"));
+            heading.Add(UtilitySemibold(TrackAccent(UiFactory.Label(eyebrow, "eyebrow"))));
+            heading.Add(TrackPrestigeStrongPrimary(UiFactory.Label(title, "editorial-title")));
+            heading.Add(CreateDivider("editorial-title-rule"));
             return heading;
         }
 
@@ -255,16 +276,17 @@ namespace Statecraft.UI.Screens
                 return;
             }
 
-            portraitArtwork.style.backgroundImage = StyleKeyword.None;
+            portraitArtwork.style.backgroundImage = new StyleBackground(StyleKeyword.None);
             portraitArtwork.RemoveFromClassList("portrait-artwork--visible");
             portraitMonogram.style.display = DisplayStyle.Flex;
             portraitOrnament.style.display = DisplayStyle.Flex;
         }
 
-        private void AddStat(VisualElement statsGrid, string key, string displayName, string icon)
+        private void AddStat(VisualElement statsGrid, string statId, string displayName, string fallbackIcon)
         {
-            var statView = new LeaderStatView(displayName, icon);
-            statViews.Add(key, statView);
+            var statView = new LeaderStatView(displayName, fallbackIcon);
+            statView.ApplyTypography(typography);
+            statViews.Add(statId, statView);
             primaryLabels.Add(statView.ValueLabel);
             secondaryLabels.Add(statView.NameLabel);
             accentLabels.Add(statView.IconLabel);
@@ -274,34 +296,18 @@ namespace Statecraft.UI.Screens
             statsGrid.Add(statView);
         }
 
-        private void AddCornerOrnaments(VisualElement parent, string scopeClass)
+        private void BindStat(CountryTheme theme, string statId, int value)
         {
-            AddCornerOrnament(parent, scopeClass, "top-left");
-            AddCornerOrnament(parent, scopeClass, "top-right");
-            AddCornerOrnament(parent, scopeClass, "bottom-left");
-            AddCornerOrnament(parent, scopeClass, "bottom-right");
+            var statView = statViews[statId];
+            statView.SetArtwork(theme.GetLeaderStatArtwork(statId));
+            statView.SetValue(value);
         }
 
-        private void AddCornerOrnament(VisualElement parent, string scopeClass, string position)
+        private LeaderDivider CreateDivider(string modifierClass)
         {
-            var corner = UiFactory.Container("corner-ornament");
-            corner.AddToClassList(scopeClass);
-            corner.AddToClassList($"corner-ornament--{position}");
-            corner.pickingMode = PickingMode.Ignore;
-            corner.Add(Accent("corner-line-horizontal"));
-            corner.Add(Accent("corner-line-vertical"));
-            corner.Add(Accent("corner-diamond"));
-            parent.Add(corner);
-        }
-
-        private VisualElement CreateSplitRule(string className)
-        {
-            var rule = UiFactory.Container(className);
-            rule.pickingMode = PickingMode.Ignore;
-            rule.Add(Accent("split-rule-line"));
-            rule.Add(Accent("split-rule-diamond"));
-            rule.Add(Accent("split-rule-line"));
-            return rule;
+            var divider = new LeaderDivider(modifierClass);
+            dividers.Add(divider);
+            return divider;
         }
 
         private VisualElement Accent(string className)
@@ -337,16 +343,59 @@ namespace Statecraft.UI.Screens
             return label;
         }
 
-        private Label TrackPrestigePrimary(Label label)
-        {
-            prestigeLabels.Add(label);
-            return TrackPrimary(label);
-        }
-
         private Label TrackPrestigeAccent(Label label)
         {
             prestigeLabels.Add(label);
             return TrackAccent(label);
+        }
+
+        private Label TrackPrestigeStrongPrimary(Label label)
+        {
+            prestigeStrongLabels.Add(label);
+            return TrackPrimary(label);
+        }
+
+        private Label UtilityRegular(Label label)
+        {
+            utilityRegularLabels.Add(label);
+            return label;
+        }
+
+        private Label UtilityMedium(Label label)
+        {
+            utilityMediumLabels.Add(label);
+            return label;
+        }
+
+        private Label UtilitySemibold(Label label)
+        {
+            utilitySemiboldLabels.Add(label);
+            return label;
+        }
+
+        private void ApplyUtilityTypography()
+        {
+            if (typography == null)
+            {
+                return;
+            }
+
+            SetFonts(utilityRegularLabels, typography.UtilityRegular);
+            SetFonts(utilityMediumLabels, typography.UtilityMedium);
+            SetFonts(utilitySemiboldLabels, typography.UtilitySemibold);
+            backButton.style.unityFont = typography.UtilitySemibold != null
+                ? new StyleFont(typography.UtilitySemibold)
+                : new StyleFont(StyleKeyword.Null);
+        }
+
+        private static void SetFonts(IEnumerable<Label> labels, Font font)
+        {
+            foreach (var label in labels)
+            {
+                label.style.unityFont = font != null
+                    ? new StyleFont(font)
+                    : new StyleFont(StyleKeyword.Null);
+            }
         }
 
         private static VisualElement Layer(string className)
@@ -360,10 +409,10 @@ namespace Statecraft.UI.Screens
         {
             return new[]
             {
-                new LeaderSkillCardData("executive-mandate", "Mandat exécutif", "Passif", "Renforce la présence institutionnelle du dirigeant et la stabilité intérieure.", theme?.GetLeaderSkillArtwork("executive-mandate")),
-                new LeaderSkillCardData("state-address", "Adresse à la nation", "Influence", "Structure les prises de parole destinées à l'opinion publique et renforce l'adhésion.", theme?.GetLeaderSkillArtwork("state-address")),
+                new LeaderSkillCardData("executive-mandate", "Mandat exécutif", "Passif", "Renforce la présence institutionnelle et la stabilité intérieure.", theme?.GetLeaderSkillArtwork("executive-mandate")),
+                new LeaderSkillCardData("state-address", "Adresse à la nation", "Influence", "Structure les prises de parole et renforce l'adhésion publique.", theme?.GetLeaderSkillArtwork("state-address")),
                 new LeaderSkillCardData("inner-council", "Conseil restreint", "Stratégie", "Prépare les arbitrages sensibles au plus haut niveau de l'État.", theme?.GetLeaderSkillArtwork("inner-council")),
-                new LeaderSkillCardData("legacy-doctrine", "Doctrine d'héritage", "Signature", "Un emplacement réservé à une doctrine de mandat future.", theme?.GetLeaderSkillArtwork("legacy-doctrine"), isLocked: true)
+                new LeaderSkillCardData("legacy-doctrine", "Doctrine d'héritage", "Signature", "Emplacement réservé à une doctrine de mandat future.", theme?.GetLeaderSkillArtwork("legacy-doctrine"), isLocked: true)
             };
         }
 

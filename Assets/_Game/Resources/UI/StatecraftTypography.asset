@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a6ad39f0b494a2cb393eb59b024e2f6, type: 3}
+  m_Name: StatecraftTypography
+  m_EditorClassIdentifier: Assembly-CSharp::Statecraft.UI.Themes.StatecraftTypography
+  utilityRegular: {fileID: 12800000, guid: d406841540f0b5f46840db996f09b460, type: 3}
+  utilityMedium: {fileID: 12800000, guid: 7a0170c99ee7a6744a1dd1b1329d696a, type: 3}
+  utilitySemibold: {fileID: 12800000, guid: 72e1e0b9669c684438dd9b3be80df327, type: 3}

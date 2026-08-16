@@ -44,6 +44,7 @@ namespace Statecraft.UI.Components
         private readonly Label descriptionLabel;
         private readonly Label stateLabel;
         private CountryTheme theme;
+        private StatecraftTypography typography;
         private bool isSelected;
         private bool isHovered;
 
@@ -134,8 +135,22 @@ namespace Statecraft.UI.Components
             lockShackle.style.borderRightColor = theme.AccentColor;
             lockShackle.style.borderLeftColor = theme.AccentColor;
             lockBody.style.backgroundColor = theme.AccentColor;
-            ApplyPrestigeFont(theme.LeaderPrestigeFont);
+            ApplyPrestigeFont(theme.LeaderPrestigeFont ?? typography?.UtilityMedium);
             RefreshVisualState();
+        }
+
+        public void ApplyTypography(StatecraftTypography statecraftTypography)
+        {
+            typography = statecraftTypography;
+            if (typography == null)
+            {
+                return;
+            }
+
+            ApplyFont(typeLabel, typography.UtilitySemibold);
+            ApplyFont(stateLabel, typography.UtilitySemibold);
+            ApplyFont(descriptionLabel, typography.UtilityRegular);
+            ApplyPrestigeFont(theme?.LeaderPrestigeFont ?? typography.UtilityMedium);
         }
 
         public void SetSelected(bool selected)
@@ -188,6 +203,13 @@ namespace Statecraft.UI.Components
         private void ApplyPrestigeFont(Font font)
         {
             nameLabel.style.unityFont = font != null
+                ? new StyleFont(font)
+                : new StyleFont(StyleKeyword.Null);
+        }
+
+        private static void ApplyFont(Label label, Font font)
+        {
+            label.style.unityFont = font != null
                 ? new StyleFont(font)
                 : new StyleFont(StyleKeyword.Null);
         }

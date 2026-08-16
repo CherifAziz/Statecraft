@@ -24,6 +24,12 @@ namespace Statecraft.UI.Themes
         public IReadOnlyList<Label> SecondaryLabels { get; set; }
         public IReadOnlyList<Label> AccentLabels { get; set; }
         public IReadOnlyList<Label> PrestigeLabels { get; set; }
+        public IReadOnlyList<Label> PrestigeStrongLabels { get; set; }
+        public Font PrestigeFallbackFont { get; set; }
+        public Font PrestigeStrongFallbackFont { get; set; }
+        public IReadOnlyList<LeaderDivider> Dividers { get; set; }
+        public LeaderDivider IdentityOrnament { get; set; }
+        public IReadOnlyList<LeaderCornerSet> CornerSets { get; set; }
         public IReadOnlyList<Button> Buttons { get; set; }
         public IReadOnlyList<LeaderSkillCard> SkillCards { get; set; }
     }
@@ -44,12 +50,12 @@ namespace Statecraft.UI.Themes
             SetTexture(bindings.EditorialSurfaceTexture, theme.SurfaceTexture);
             bindings.IdentityGradient.SetColors(
                 WithAlpha(theme.BackgroundColor, 0f),
-                WithAlpha(theme.BackgroundColor, 0.64f),
-                WithAlpha(theme.BackgroundColor, 0.97f),
-                0.46f);
+                WithAlpha(theme.BackgroundColor, 0.58f),
+                WithAlpha(theme.BackgroundColor, 0.985f),
+                0.48f);
             bindings.EditorialBackdrop.SetColors(
-                WithAlpha(theme.BackgroundColor, 0.98f),
-                WithAlpha(theme.SurfaceColor, 0.965f));
+                WithAlpha(theme.BackgroundColor, 0.99f),
+                WithAlpha(theme.SurfaceColor, 0.98f));
 
             SetBackground(bindings.Surfaces, theme.SurfaceColor);
             SetBackground(bindings.Accents, theme.AccentColor);
@@ -80,9 +86,24 @@ namespace Statecraft.UI.Themes
 
             foreach (var label in bindings.PrestigeLabels)
             {
-                label.style.unityFont = theme.LeaderPrestigeFont != null
-                    ? new StyleFont(theme.LeaderPrestigeFont)
-                    : new StyleFont(StyleKeyword.Null);
+                ApplyFont(label, theme.LeaderPrestigeFont ?? bindings.PrestigeFallbackFont);
+            }
+
+            foreach (var label in bindings.PrestigeStrongLabels)
+            {
+                ApplyFont(label, theme.LeaderPrestigeStrongFont ?? theme.LeaderPrestigeFont ?? bindings.PrestigeStrongFallbackFont);
+            }
+
+            foreach (var divider in bindings.Dividers)
+            {
+                divider.ApplyTheme(theme.LeaderDividerOrnament, theme);
+            }
+
+            bindings.IdentityOrnament.ApplyTheme(theme.LeaderIdentityOrnament, theme);
+
+            foreach (var cornerSet in bindings.CornerSets)
+            {
+                cornerSet.ApplyTheme(theme);
             }
 
             foreach (var button in bindings.Buttons)
@@ -127,6 +148,13 @@ namespace Statecraft.UI.Themes
         {
             color.a = alpha;
             return color;
+        }
+
+        private static void ApplyFont(Label label, Font font)
+        {
+            label.style.unityFont = font != null
+                ? new StyleFont(font)
+                : new StyleFont(StyleKeyword.Null);
         }
     }
 }

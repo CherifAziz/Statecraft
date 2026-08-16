@@ -14,6 +14,16 @@ namespace Statecraft.UI.Themes
         public Sprite Artwork => artwork;
     }
 
+    [Serializable]
+    public sealed class LeaderStatArtworkBinding
+    {
+        [SerializeField] private string statId = string.Empty;
+        [SerializeField] private Sprite artwork = null;
+
+        public string StatId => statId;
+        public Sprite Artwork => artwork;
+    }
+
     [CreateAssetMenu(fileName = "CountryTheme", menuName = "Statecraft/UI/Country Theme")]
     public sealed class CountryTheme : ScriptableObject
     {
@@ -40,8 +50,15 @@ namespace Statecraft.UI.Themes
         [Header("Optional Leader Skill art")]
         [SerializeField] private LeaderSkillArtworkBinding[] leaderSkillArtworks = Array.Empty<LeaderSkillArtworkBinding>();
 
+        [Header("Optional Leader UI art")]
+        [SerializeField] private Sprite leaderDividerOrnament = null;
+        [SerializeField] private Sprite leaderCornerOrnament = null;
+        [SerializeField] private Sprite leaderIdentityOrnament = null;
+        [SerializeField] private LeaderStatArtworkBinding[] leaderStatArtworks = Array.Empty<LeaderStatArtworkBinding>();
+
         [Header("Optional Typography")]
         [SerializeField] private Font leaderPrestigeFont = null;
+        [SerializeField] private Font leaderPrestigeStrongFont = null;
 
         [Header("Optional Leader Background FX")]
         [SerializeField] private bool leaderBackgroundFxEnabled = false;
@@ -74,7 +91,11 @@ namespace Statecraft.UI.Themes
         public Sprite Emblem => emblem;
         public Sprite PortraitFrame => portraitFrame;
         public Texture2D SurfaceTexture => surfaceTexture;
+        public Sprite LeaderDividerOrnament => leaderDividerOrnament;
+        public Sprite LeaderCornerOrnament => leaderCornerOrnament;
+        public Sprite LeaderIdentityOrnament => leaderIdentityOrnament;
         public Font LeaderPrestigeFont => leaderPrestigeFont;
+        public Font LeaderPrestigeStrongFont => leaderPrestigeStrongFont;
         public bool LeaderBackgroundFxEnabled => leaderBackgroundFxEnabled;
         public float LeaderParallaxStrength => leaderParallaxStrength;
         public float LeaderDriftStrength => leaderDriftStrength;
@@ -94,6 +115,24 @@ namespace Statecraft.UI.Themes
             foreach (var binding in leaderSkillArtworks)
             {
                 if (binding != null && string.Equals(binding.SkillId, skillId, StringComparison.Ordinal))
+                {
+                    return binding.Artwork;
+                }
+            }
+
+            return null;
+        }
+
+        public Sprite GetLeaderStatArtwork(string statId)
+        {
+            if (leaderStatArtworks == null)
+            {
+                return null;
+            }
+
+            foreach (var binding in leaderStatArtworks)
+            {
+                if (binding != null && string.Equals(binding.StatId, statId, StringComparison.OrdinalIgnoreCase))
                 {
                     return binding.Artwork;
                 }

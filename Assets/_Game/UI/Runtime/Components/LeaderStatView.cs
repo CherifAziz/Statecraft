@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using Statecraft.UI.Themes;
 
 namespace Statecraft.UI.Components
 {
@@ -8,6 +9,7 @@ namespace Statecraft.UI.Components
         private readonly Label valueLabel;
         private readonly Label nameLabel;
         private readonly Label iconLabel;
+        private readonly VisualElement iconArtwork;
         private readonly VisualElement fill;
         private readonly VisualElement iconFrame;
         private readonly VisualElement marker;
@@ -17,7 +19,9 @@ namespace Statecraft.UI.Components
             AddToClassList("stat-row");
 
             iconFrame = UiFactory.Container("stat-icon-frame");
+            iconArtwork = UiFactory.Container("stat-icon-artwork");
             iconLabel = UiFactory.Label(icon, "stat-icon");
+            iconFrame.Add(iconArtwork);
             iconFrame.Add(iconLabel);
 
             var body = UiFactory.Container("stat-body");
@@ -46,11 +50,41 @@ namespace Statecraft.UI.Components
         public VisualElement IconFrame => iconFrame;
         public VisualElement Marker => marker;
 
+        public void SetArtwork(Sprite artwork)
+        {
+            var hasArtwork = artwork != null;
+            iconArtwork.style.backgroundImage = hasArtwork
+                ? new StyleBackground(artwork)
+                : new StyleBackground(StyleKeyword.None);
+            iconArtwork.style.display = hasArtwork ? DisplayStyle.Flex : DisplayStyle.None;
+            iconLabel.style.display = hasArtwork ? DisplayStyle.None : DisplayStyle.Flex;
+            iconFrame.EnableInClassList("stat-icon-frame--artwork", hasArtwork);
+        }
+
+        public void ApplyTypography(StatecraftTypography typography)
+        {
+            if (typography == null)
+            {
+                return;
+            }
+
+            SetFont(nameLabel, typography.UtilityMedium);
+            SetFont(valueLabel, typography.UtilitySemibold);
+            SetFont(iconLabel, typography.UtilitySemibold);
+        }
+
         public void SetValue(int value)
         {
             var clampedValue = Mathf.Clamp(value, 0, 100);
             valueLabel.text = clampedValue.ToString();
             fill.style.width = Length.Percent(clampedValue);
+        }
+
+        private static void SetFont(Label label, Font font)
+        {
+            label.style.unityFont = font != null
+                ? new StyleFont(font)
+                : new StyleFont(StyleKeyword.Null);
         }
     }
 }

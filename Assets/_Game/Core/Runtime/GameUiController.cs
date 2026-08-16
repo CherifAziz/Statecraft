@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Statecraft.Data;
 using Statecraft.UI.Screens;
+using Statecraft.UI.Themes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,12 +13,14 @@ namespace Statecraft.Core
         private const string StyleResourcePath = "UI/Statecraft";
         private const string LeaderStyleResourcePath = "UI/LeaderScreen";
         private const string RuntimeThemeResourcePath = "UI/StatecraftTheme";
+        private const string TypographyResourcePath = "UI/StatecraftTypography";
 
         private PanelSettings panelSettings;
         private UIDocument document;
         private BootScreen bootScreen;
         private WorldMapScreen worldMapScreen;
         private LeaderScreen leaderScreen;
+        private StatecraftTypography typography;
         private IReadOnlyList<CountryDefinition> countries;
 
         private void Start()
@@ -79,6 +82,12 @@ namespace Statecraft.Core
 
         private void LoadContent()
         {
+            typography = Resources.Load<StatecraftTypography>(TypographyResourcePath);
+            if (typography == null)
+            {
+                Debug.LogError($"Missing typography settings at Resources/{TypographyResourcePath}.asset.");
+            }
+
             var catalog = Resources.Load<CountryCatalog>(CatalogResourcePath);
             if (catalog == null || catalog.Countries.Count == 0)
             {
@@ -96,7 +105,7 @@ namespace Statecraft.Core
 
             bootScreen = new BootScreen(ShowWorldMap);
             worldMapScreen = new WorldMapScreen(countries, OpenCountry);
-            leaderScreen = new LeaderScreen(ShowWorldMap);
+            leaderScreen = new LeaderScreen(ShowWorldMap, typography);
 
             root.Add(bootScreen);
             root.Add(worldMapScreen);

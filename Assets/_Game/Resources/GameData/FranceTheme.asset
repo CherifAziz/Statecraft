@@ -35,7 +35,24 @@ MonoBehaviour:
     artwork: {fileID: 21300000, guid: c113c0de000000000000000000000013, type: 3}
   - skillId: legacy-doctrine
     artwork: {fileID: 21300000, guid: c114c0de000000000000000000000014, type: 3}
-  leaderPrestigeFont: {fileID: 0}
+  leaderDividerOrnament: {fileID: 21300000, guid: 3ad43c73511d635449e84cf649300405, type: 3}
+  leaderCornerOrnament: {fileID: 21300000, guid: df9fe7a391dd6f445ad3b0cf8e4306a2, type: 3}
+  leaderIdentityOrnament: {fileID: 21300000, guid: 8dd6189eb6353d048bd16fc749ac6d5c, type: 3}
+  leaderStatArtworks:
+  - statId: charisma
+    artwork: {fileID: 21300000, guid: ce91f5e76a5bac448906fb92d473c542, type: 3}
+  - statId: diplomacy
+    artwork: {fileID: 21300000, guid: 51c83a3340ff12244be47dbc366be177, type: 3}
+  - statId: authority
+    artwork: {fileID: 21300000, guid: 5f825c9e07829d94eaab0e00ba94404d, type: 3}
+  - statId: strategy
+    artwork: {fileID: 21300000, guid: ff3927edd04aff44290258db5f6c3151, type: 3}
+  - statId: economy
+    artwork: {fileID: 21300000, guid: e26ead7a23c96f74eabe8ba6dd23431d, type: 3}
+  - statId: eloquence
+    artwork: {fileID: 21300000, guid: db2839d170c7d4b408544d17dc4d8b5a, type: 3}
+  leaderPrestigeFont: {fileID: 12800000, guid: c34cfa36cf7729047a56196ec69f1e81, type: 3}
+  leaderPrestigeStrongFont: {fileID: 12800000, guid: 8136f854857ebfb4ea969226507be596, type: 3}
   leaderBackgroundFxEnabled: 1
   leaderParallaxStrength: 2.5
   leaderDriftStrength: 1.5
