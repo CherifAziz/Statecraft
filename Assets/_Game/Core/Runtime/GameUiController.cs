@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Statecraft.Data;
 using Statecraft.Map.Data;
+using Statecraft.Simulation;
 using Statecraft.UI.Screens;
 using Statecraft.UI.Themes;
 using UnityEngine;
@@ -25,6 +26,9 @@ namespace Statecraft.Core
         private StatecraftTypography typography;
         private IReadOnlyList<CountryDefinition> countries;
         private WorldMapData worldMapData;
+        private GameRuntime gameRuntime;
+
+        public GameRuntime Runtime => gameRuntime;
 
         private void Start()
         {
@@ -103,10 +107,12 @@ namespace Statecraft.Core
             {
                 Debug.LogError($"Missing country catalog at Resources/{CatalogResourcePath}.asset.");
                 countries = new List<CountryDefinition>();
+                gameRuntime = new GameRuntime(System.Array.Empty<ISimulationCountryDefinition>());
                 return;
             }
 
             countries = catalog.Countries;
+            gameRuntime = new GameRuntime(countries);
 
             try
             {

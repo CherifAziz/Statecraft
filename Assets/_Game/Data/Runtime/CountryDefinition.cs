@@ -1,10 +1,11 @@
 using Statecraft.UI.Themes;
+using Statecraft.Simulation;
 using UnityEngine;
 
 namespace Statecraft.Data
 {
     [CreateAssetMenu(fileName = "Country", menuName = "Statecraft/Data/Country")]
-    public sealed class CountryDefinition : ScriptableObject
+    public sealed class CountryDefinition : ScriptableObject, ISimulationCountryDefinition
     {
         [SerializeField] private string id;
         [SerializeField] private string displayName;
@@ -13,6 +14,7 @@ namespace Statecraft.Data
         [SerializeField] private Sprite flag = null;
         [SerializeField] private long population;
         [SerializeField] private double gdpUsd;
+        [SerializeField] private CountrySimulationSetup simulationSetup;
         [SerializeField] private string capital;
         [SerializeField] private CountryTheme theme;
         [SerializeField] private LeaderDefinition leader;
@@ -24,6 +26,7 @@ namespace Statecraft.Data
         public Sprite Flag => flag;
         public long Population => population;
         public double GdpUsd => gdpUsd;
+        public CountrySimulationSetup SimulationSetup => simulationSetup;
         public string Capital => capital;
         public CountryTheme Theme => theme;
         public LeaderDefinition Leader => leader;
@@ -36,6 +39,7 @@ namespace Statecraft.Data
             string countryMapGeographicId,
             long countryPopulation,
             double countryGdpUsd,
+            CountrySimulationSetup countrySimulationSetup,
             string countryCapital,
             CountryTheme countryTheme,
             LeaderDefinition countryLeader)
@@ -46,6 +50,7 @@ namespace Statecraft.Data
             mapGeographicId = countryMapGeographicId;
             population = countryPopulation;
             gdpUsd = countryGdpUsd;
+            simulationSetup = countrySimulationSetup;
             capital = countryCapital;
             theme = countryTheme;
             leader = countryLeader;

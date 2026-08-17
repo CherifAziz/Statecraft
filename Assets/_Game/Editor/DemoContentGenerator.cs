@@ -1,5 +1,6 @@
 using System.IO;
 using Statecraft.Data;
+using Statecraft.Simulation;
 using Statecraft.UI.Themes;
 using UnityEditor;
 using UnityEngine;
@@ -76,16 +77,28 @@ namespace Statecraft.Editor
                 new LeaderSkillDefinition("sovereign-council", "Conseil souverain", "Signature", "Réunit l'expertise institutionnelle pour éclairer les décisions décisives.")
             });
 
+            var franceSimulationSetup = CreateOrLoad<CountrySimulationSetup>(Root + "/FranceSimulationSetup.asset");
+            franceSimulationSetup.Configure(85_000_000_000d, 54f, 72f, 63f);
+
+            var tunisiaSimulationSetup = CreateOrLoad<CountrySimulationSetup>(Root + "/TunisiaSimulationSetup.asset");
+            tunisiaSimulationSetup.Configure(12_000_000_000d, 61f, 64f, 70f);
+
             var france = CreateOrLoad<CountryDefinition>(Root + "/France.asset");
-            france.Configure("france", "France", "FR", "FRA", 68_600_000, 3_200_000_000_000d, "Paris", franceTheme, franceLeader);
+            france.Configure(
+                "france", "France", "FR", "FRA", 68_600_000, 3_200_000_000_000d,
+                franceSimulationSetup, "Paris", franceTheme, franceLeader);
 
             var tunisia = CreateOrLoad<CountryDefinition>(Root + "/Tunisia.asset");
-            tunisia.Configure("tunisia", "Tunisie", "TN", "TUN", 12_300_000, 52_000_000_000d, "Tunis", tunisiaTheme, tunisiaLeader);
+            tunisia.Configure(
+                "tunisia", "Tunisie", "TN", "TUN", 12_300_000, 52_000_000_000d,
+                tunisiaSimulationSetup, "Tunis", tunisiaTheme, tunisiaLeader);
 
             var catalog = CreateOrLoad<CountryCatalog>(CatalogPath);
             catalog.Configure(new[] { france, tunisia });
 
-            MarkDirty(franceTheme, tunisiaTheme, franceLeader, tunisiaLeader, france, tunisia, catalog);
+            MarkDirty(
+                franceTheme, tunisiaTheme, franceLeader, tunisiaLeader,
+                franceSimulationSetup, tunisiaSimulationSetup, france, tunisia, catalog);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
             Debug.Log("Statecraft demo content is ready.");

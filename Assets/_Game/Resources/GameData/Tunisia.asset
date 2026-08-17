@@ -19,6 +19,7 @@ MonoBehaviour:
   flag: {fileID: 0}
   population: 12300000
   gdpUsd: 52000000000
+  simulationSetup: {fileID: 11400000, guid: cff8d6e63feb6d746a6e1471f50a4e3b, type: 2}
   capital: Tunis
   theme: {fileID: 11400000, guid: a2222222222222222222222222222222, type: 2}
   leader: {fileID: 11400000, guid: b2222222222222222222222222222222, type: 2}

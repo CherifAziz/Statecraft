@@ -1,0 +1,21 @@
+{
+    "name": "Statecraft.Simulation.EditModeTests",
+    "rootNamespace": "Statecraft.Simulation.Tests",
+    "references": [
+        "Statecraft.Simulation"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false,
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

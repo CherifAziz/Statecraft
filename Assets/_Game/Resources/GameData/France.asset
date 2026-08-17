@@ -19,6 +19,7 @@ MonoBehaviour:
   flag: {fileID: 0}
   population: 68600000
   gdpUsd: 3200000000000
+  simulationSetup: {fileID: 11400000, guid: dacf98faca542444c8bbf9108048f290, type: 2}
   capital: Paris
   theme: {fileID: 11400000, guid: a1111111111111111111111111111111, type: 2}
   leader: {fileID: 11400000, guid: b1111111111111111111111111111111, type: 2}
