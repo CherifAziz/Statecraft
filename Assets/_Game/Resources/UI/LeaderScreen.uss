@@ -237,6 +237,12 @@
     opacity: 0.48;
 }
 
+.leader-header-actions {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+}
+
 .back-button {
     height: 46px;
     min-width: 208px;
@@ -266,6 +272,37 @@
     opacity: 0.68;
     scale: 0.986;
     translate: -1px 1px;
+}
+
+.leader-mandate-button {
+    height: 46px;
+    min-width: 224px;
+    flex-shrink: 0;
+    margin-left: 14px;
+    padding-left: 18px;
+    padding-right: 18px;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 2px;
+    border-radius: 0;
+    font-size: 11px;
+    letter-spacing: 1.65px;
+    -unity-font-style: normal;
+    transition-property: opacity, scale, translate, background-color;
+    transition-duration: 170ms;
+    transition-timing-function: ease-out;
+}
+
+.leader-mandate-button:hover {
+    opacity: 0.88;
+    translate: 0 -2px;
+}
+
+.leader-mandate-button:active {
+    opacity: 0.72;
+    scale: 0.988;
+    translate: 0 1px;
 }
 
 /* Main composition */
@@ -969,6 +1006,15 @@
 .compact .back-button {
     min-width: 166px;
     font-size: 11px;
+}
+
+.compact .leader-mandate-button {
+    min-width: 186px;
+    margin-left: 9px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 9px;
+    letter-spacing: 1.25px;
 }
 
 .compact .leader-stage {

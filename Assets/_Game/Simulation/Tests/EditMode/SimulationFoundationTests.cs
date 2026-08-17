@@ -207,6 +207,22 @@ namespace Statecraft.Simulation.Tests
         }
 
         [Test]
+        public void StartingNewMandate_ReplacesPreviousSessionWithCleanPlayerState()
+        {
+            var runtime = new GameRuntime(definitions);
+            var franceSession = runtime.StartNewGame(france);
+            franceSession.PlayerCountryState.ModifyPublicApproval(-8f);
+
+            var tunisiaSession = runtime.StartNewGame(tunisia);
+
+            Assert.That(franceSession.IsActive, Is.False);
+            Assert.That(tunisiaSession.IsActive, Is.True);
+            Assert.That(runtime.CurrentSession, Is.SameAs(tunisiaSession));
+            Assert.That(tunisiaSession.PlayerCountryId, Is.EqualTo("tunisia"));
+            Assert.That(tunisiaSession.PlayerCountryState.PublicApproval, Is.EqualTo(61f));
+        }
+
+        [Test]
         public void FranceAndTunisia_RuntimeStatesAreIndependent()
         {
             var session = GameSessionFactory.CreateNewGame(france, definitions);

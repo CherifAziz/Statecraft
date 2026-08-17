@@ -14,6 +14,7 @@ namespace Statecraft.Core
         private const string CatalogResourcePath = "GameData/CountryCatalog";
         private const string StyleResourcePath = "UI/Statecraft";
         private const string LeaderStyleResourcePath = "UI/LeaderScreen";
+        private const string DashboardStyleResourcePath = "UI/CountryDashboard";
         private const string RuntimeThemeResourcePath = "UI/StatecraftTheme";
         private const string TypographyResourcePath = "UI/StatecraftTypography";
         private const string PanelSettingsResourcePath = "UI/StatecraftPanelSettings";
@@ -23,10 +24,12 @@ namespace Statecraft.Core
         private BootScreen bootScreen;
         private WorldMapScreen worldMapScreen;
         private LeaderScreen leaderScreen;
+        private CountryDashboardScreen dashboardScreen;
         private StatecraftTypography typography;
         private IReadOnlyList<CountryDefinition> countries;
         private WorldMapData worldMapData;
         private GameRuntime gameRuntime;
+        private bool mapConsultationDuringMandate;
 
         public GameRuntime Runtime => gameRuntime;
 
@@ -92,6 +95,16 @@ namespace Statecraft.Core
             {
                 Debug.LogError($"Missing UI style sheet at Resources/{LeaderStyleResourcePath}.uss.");
             }
+
+            var dashboardStyleSheet = Resources.Load<StyleSheet>(DashboardStyleResourcePath);
+            if (dashboardStyleSheet != null)
+            {
+                root.styleSheets.Add(dashboardStyleSheet);
+            }
+            else
+            {
+                Debug.LogError($"Missing UI style sheet at Resources/{DashboardStyleResourcePath}.uss.");
+            }
         }
 
         private void LoadContent()
@@ -128,24 +141,108 @@ namespace Statecraft.Core
         {
             var root = document.rootVisualElement;
 
-            bootScreen = new BootScreen(ShowWorldMap);
+            bootScreen = new BootScreen(ShowWorldMapFromBoot);
             worldMapScreen = new WorldMapScreen(worldMapData, countries, OpenCountry, typography);
-            leaderScreen = new LeaderScreen(ShowWorldMap, typography);
+            leaderScreen = new LeaderScreen(ShowWorldMap, StartMandate, ShowDashboard, typography);
+            dashboardScreen = new CountryDashboardScreen(ShowWorldMapFromDashboard, ShowPlayerLeader, typography);
 
             root.Add(bootScreen);
             root.Add(worldMapScreen);
             root.Add(leaderScreen);
+            root.Add(dashboardScreen);
         }
 
         private void OpenCountry(CountryDefinition country)
         {
-            leaderScreen.Bind(country);
+            var mode = mapConsultationDuringMandate && gameRuntime.HasActiveSession &&
+                string.Equals(gameRuntime.CurrentSession.PlayerCountryId, country.Id, System.StringComparison.Ordinal)
+                    ? LeaderScreenMode.ActiveSession
+                    : LeaderScreenMode.PreGame;
+            leaderScreen.Bind(country, mode);
             ShowOnly(leaderScreen);
+        }
+
+        private void StartMandate(CountryDefinition country)
+        {
+            if (country == null)
+            {
+                return;
+            }
+
+            var session = gameRuntime.StartNewGame(country);
+            mapConsultationDuringMandate = false;
+            if (dashboardScreen.Bind(session, country))
+            {
+                ShowOnly(dashboardScreen);
+            }
+        }
+
+        private void ShowDashboard()
+        {
+            if (!gameRuntime.HasActiveSession)
+            {
+                ShowWorldMap();
+                return;
+            }
+
+            var playerCountry = FindCountry(gameRuntime.CurrentSession.PlayerCountryId);
+            if (playerCountry == null || !dashboardScreen.Bind(gameRuntime.CurrentSession, playerCountry))
+            {
+                ShowWorldMap();
+                return;
+            }
+
+            ShowOnly(dashboardScreen);
+        }
+
+        private void ShowPlayerLeader()
+        {
+            if (!gameRuntime.HasActiveSession)
+            {
+                ShowWorldMap();
+                return;
+            }
+
+            var playerCountry = FindCountry(gameRuntime.CurrentSession.PlayerCountryId);
+            if (playerCountry == null)
+            {
+                ShowWorldMap();
+                return;
+            }
+
+            mapConsultationDuringMandate = true;
+            leaderScreen.Bind(playerCountry, LeaderScreenMode.ActiveSession);
+            ShowOnly(leaderScreen);
+        }
+
+        private CountryDefinition FindCountry(string countryId)
+        {
+            foreach (var country in countries)
+            {
+                if (country != null && string.Equals(country.Id, countryId, System.StringComparison.Ordinal))
+                {
+                    return country;
+                }
+            }
+
+            return null;
         }
 
         private void ShowBoot()
         {
             ShowOnly(bootScreen);
+        }
+
+        private void ShowWorldMapFromBoot()
+        {
+            mapConsultationDuringMandate = false;
+            ShowWorldMap();
+        }
+
+        private void ShowWorldMapFromDashboard()
+        {
+            mapConsultationDuringMandate = true;
+            ShowWorldMap();
         }
 
         private void ShowWorldMap()
@@ -158,10 +255,12 @@ namespace Statecraft.Core
             bootScreen.style.display = visibleScreen == bootScreen ? DisplayStyle.Flex : DisplayStyle.None;
             worldMapScreen.style.display = visibleScreen == worldMapScreen ? DisplayStyle.Flex : DisplayStyle.None;
             leaderScreen.style.display = visibleScreen == leaderScreen ? DisplayStyle.Flex : DisplayStyle.None;
+            dashboardScreen.style.display = visibleScreen == dashboardScreen ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void OnDestroy()
         {
+            dashboardScreen?.Unbind();
             if (panelSettings != null)
             {
                 Destroy(panelSettings);

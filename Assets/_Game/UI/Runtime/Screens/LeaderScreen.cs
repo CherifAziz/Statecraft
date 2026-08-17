@@ -1,18 +1,24 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Statecraft.Data;
 using Statecraft.UI.Components;
+using Statecraft.UI.Formatting;
 using Statecraft.UI.Themes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace Statecraft.UI.Screens
 {
+    public enum LeaderScreenMode
+    {
+        PreGame,
+        ActiveSession
+    }
+
     public sealed class LeaderScreen : VisualElement
     {
-        private static readonly CultureInfo DisplayCulture = CultureInfo.GetCultureInfo("fr-FR");
-
+        private readonly Action<CountryDefinition> startMandate;
+        private readonly Action returnToMandate;
         private readonly StatecraftTypography typography;
         private readonly Label countryName;
         private readonly Label countryMetadata;
@@ -33,6 +39,7 @@ namespace Statecraft.UI.Screens
         private readonly VerticalGradientElement editorialBackdrop;
         private readonly LeaderDivider identityOrnament;
         private readonly Button backButton;
+        private readonly Button mandateButton;
         private readonly Dictionary<string, LeaderStatView> statViews = new();
         private readonly List<LeaderSkillCard> skillCards = new();
         private readonly List<LeaderDivider> dividers = new();
@@ -48,10 +55,18 @@ namespace Statecraft.UI.Screens
         private readonly List<VisualElement> accentElements = new();
         private readonly List<VisualElement> themedBorders = new();
         private readonly LeaderBackgroundFx backgroundFx;
+        private CountryDefinition currentCountry;
+        private LeaderScreenMode currentMode;
         private int portraitRevealVersion;
 
-        public LeaderScreen(Action back, StatecraftTypography typography)
+        public LeaderScreen(
+            Action back,
+            Action<CountryDefinition> startMandate,
+            Action returnToMandate,
+            StatecraftTypography typography)
         {
+            this.startMandate = startMandate ?? throw new ArgumentNullException(nameof(startMandate));
+            this.returnToMandate = returnToMandate ?? throw new ArgumentNullException(nameof(returnToMandate));
             this.typography = typography;
             name = "leader-screen";
             AddToClassList("screen");
@@ -82,9 +97,14 @@ namespace Statecraft.UI.Screens
 
             var countryRule = CreateDivider("leader-country-rule");
             backButton = UiFactory.Button("←  CARTE DU MONDE", back, "back-button");
+            mandateButton = UiFactory.Button("COMMENCER LE MANDAT", ActivateMandate, "leader-mandate-button");
+            mandateButton.name = "leader-mandate-button";
+            var headerActions = UiFactory.Container("leader-header-actions");
+            headerActions.Add(backButton);
+            headerActions.Add(mandateButton);
             headerContent.Add(countryIdentity);
             headerContent.Add(countryRule);
-            headerContent.Add(backButton);
+            headerContent.Add(headerActions);
             header.Add(headerContent);
 
             var stage = UiFactory.Container("leader-stage");
@@ -181,13 +201,15 @@ namespace Statecraft.UI.Screens
             ApplyUtilityTypography();
         }
 
-        public void Bind(CountryDefinition country)
+        public void Bind(CountryDefinition country, LeaderScreenMode mode)
         {
+            currentCountry = country ?? throw new ArgumentNullException(nameof(country));
+            currentMode = mode;
             portraitRevealVersion++;
             var leader = country.Leader;
             var theme = country.Theme;
             countryName.text = country.DisplayName.ToUpperInvariant();
-            countryMetadata.text = $"{country.Capital.ToUpperInvariant()}  •  {FormatPopulation(country.Population)} HAB.  •  {FormatGdp(country.GdpUsd)} PIB";
+            countryMetadata.text = $"{country.Capital.ToUpperInvariant()}  •  {StatecraftValueFormatter.FormatPopulation(country.Population)} HAB.  •  {StatecraftValueFormatter.FormatUsd(country.GdpUsd)} PIB";
             countryEmblemFallback.text = country.VisualIdentifier;
             leaderName.text = leader.DisplayName.ToUpperInvariant();
             leaderTitle.text = leader.Title;
@@ -237,12 +259,40 @@ namespace Statecraft.UI.Screens
                 Dividers = dividers,
                 IdentityOrnament = identityOrnament,
                 CornerSets = cornerSets,
-                Buttons = new[] { backButton },
+                Buttons = new[] { backButton, mandateButton },
                 SkillCards = skillCards
             });
+            ApplyMandateButtonTheme(theme);
             backgroundFx.Apply(theme);
 
             SelectSkillCard(skillCards[0]);
+        }
+
+        private void ActivateMandate()
+        {
+            if (currentMode == LeaderScreenMode.ActiveSession)
+            {
+                returnToMandate();
+                return;
+            }
+
+            if (currentCountry != null)
+            {
+                startMandate(currentCountry);
+            }
+        }
+
+        private void ApplyMandateButtonTheme(CountryTheme theme)
+        {
+            mandateButton.text = currentMode == LeaderScreenMode.ActiveSession
+                ? "RETOUR AU MANDAT"
+                : "COMMENCER LE MANDAT";
+            mandateButton.style.backgroundColor = WithAlpha(theme.AccentColor, 0.12f);
+            mandateButton.style.color = theme.PrimaryTextColor;
+            mandateButton.style.borderTopColor = WithAlpha(theme.AccentColor, 0.62f);
+            mandateButton.style.borderRightColor = WithAlpha(theme.AccentColor, 0.62f);
+            mandateButton.style.borderBottomColor = theme.AccentColor;
+            mandateButton.style.borderLeftColor = WithAlpha(theme.AccentColor, 0.62f);
         }
 
         private VisualElement CreateEditorialHeading(string eyebrow, string title, string modifierClass)
@@ -387,6 +437,9 @@ namespace Statecraft.UI.Screens
             backButton.style.unityFont = typography.UtilitySemibold != null
                 ? new StyleFont(typography.UtilitySemibold)
                 : new StyleFont(StyleKeyword.Null);
+            mandateButton.style.unityFont = typography.UtilitySemibold != null
+                ? new StyleFont(typography.UtilitySemibold)
+                : new StyleFont(StyleKeyword.Null);
         }
 
         private static void SetFonts(IEnumerable<Label> labels, Font font)
@@ -444,18 +497,11 @@ namespace Statecraft.UI.Screens
                 : $"{words[0][0]}{words[^1][0]}".ToUpperInvariant();
         }
 
-        private static string FormatPopulation(long population)
+        private static Color WithAlpha(Color color, float alpha)
         {
-            return population >= 1_000_000
-                ? $"{(population / 1_000_000d).ToString("0.#", DisplayCulture)} M"
-                : $"{(population / 1_000d).ToString("0.#", DisplayCulture)} K";
+            color.a = alpha;
+            return color;
         }
 
-        private static string FormatGdp(double gdpUsd)
-        {
-            return gdpUsd >= 1_000_000_000_000d
-                ? $"{(gdpUsd / 1_000_000_000_000d).ToString("0.##", DisplayCulture)} T$"
-                : $"{(gdpUsd / 1_000_000_000d).ToString("0", DisplayCulture)} Md$";
-        }
     }
 }

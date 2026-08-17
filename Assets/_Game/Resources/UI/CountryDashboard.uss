@@ -1,0 +1,499 @@
+.country-dashboard {
+    position: relative;
+    flex-grow: 1;
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.dashboard-surface-texture,
+.dashboard-ambient-field {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.dashboard-surface-texture {
+    opacity: 0.018;
+    background-repeat: repeat;
+    background-size: 760px 760px;
+}
+
+.dashboard-ambient-field {
+    left: 25%;
+    top: 11%;
+    bottom: 8%;
+    background-color: rgba(255, 255, 255, 0.012);
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    opacity: 0.55;
+}
+
+.dashboard-top-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 2px;
+    background-color: rgba(232, 214, 177, 0.18);
+}
+
+.dashboard-header,
+.dashboard-main,
+.dashboard-navigation-content {
+    width: 100%;
+    max-width: 2160px;
+    align-self: center;
+}
+
+.dashboard-header {
+    height: 184px;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 3.35%;
+    padding-right: 3.35%;
+    padding-top: 18px;
+}
+
+.dashboard-identity {
+    flex-direction: row;
+    align-items: center;
+}
+
+.dashboard-emblem {
+    width: 100px;
+    height: 100px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    opacity: 0.72;
+}
+
+.dashboard-emblem-fallback {
+    font-size: 17px;
+    letter-spacing: 2px;
+    -unity-text-align: middle-center;
+}
+
+.dashboard-header-signal {
+    width: 1px;
+    height: 82px;
+    flex-shrink: 0;
+    margin-left: 27px;
+    margin-right: 31px;
+    opacity: 0.56;
+}
+
+.dashboard-eyebrow,
+.dashboard-date-label,
+.dashboard-section-eyebrow,
+.dashboard-briefing-eyebrow {
+    font-size: 10px;
+    letter-spacing: 3.2px;
+    -unity-font-style: normal;
+}
+
+.dashboard-country-name {
+    margin-top: 3px;
+    font-size: 50px;
+    letter-spacing: 2.2px;
+    -unity-font-style: normal;
+}
+
+.dashboard-mandate-name {
+    margin-top: 2px;
+    font-size: 14px;
+    letter-spacing: 0.45px;
+    opacity: 0.93;
+    -unity-font-style: normal;
+}
+
+.dashboard-date-block {
+    align-items: flex-end;
+    padding-right: 2px;
+}
+
+.dashboard-date-value {
+    margin-top: 11px;
+    font-size: 20px;
+    letter-spacing: 2.5px;
+    -unity-font-style: normal;
+}
+
+.dashboard-main {
+    flex-grow: 1;
+    min-height: 0;
+    flex-direction: row;
+    padding-left: 3.35%;
+    padding-right: 3.35%;
+    padding-top: 18px;
+    padding-bottom: 36px;
+}
+
+.dashboard-indicators {
+    flex-grow: 1;
+    min-width: 0;
+    padding-right: 58px;
+}
+
+.dashboard-section-heading {
+    height: 96px;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.dashboard-section-title {
+    margin-top: 4px;
+    font-size: 39px;
+    letter-spacing: 0.45px;
+    -unity-font-style: normal;
+}
+
+.dashboard-section-rule {
+    height: 1px;
+    flex-grow: 1;
+    margin-left: 35px;
+    margin-bottom: 10px;
+    opacity: 0.72;
+}
+
+.dashboard-macro-row {
+    height: 230px;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: stretch;
+    margin-top: 22px;
+}
+
+.dashboard-macro-indicator {
+    width: 33.333%;
+    min-width: 0;
+    justify-content: center;
+    padding-left: 30px;
+    padding-right: 24px;
+    border-left-width: 1px;
+}
+
+.dashboard-macro-indicator--first {
+    padding-left: 0;
+    border-left-width: 0;
+}
+
+.dashboard-indicator-label,
+.dashboard-political-label {
+    font-size: 11px;
+    letter-spacing: 2.45px;
+    -unity-font-style: normal;
+}
+
+.dashboard-macro-value {
+    margin-top: 16px;
+    font-size: 57px;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    -unity-font-style: normal;
+}
+
+.dashboard-indicator-meta {
+    margin-top: 11px;
+    font-size: 9px;
+    letter-spacing: 1.65px;
+    opacity: 0.68;
+    -unity-font-style: normal;
+}
+
+.dashboard-political-heading {
+    height: 62px;
+    flex-shrink: 0;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dashboard-political-heading-label {
+    font-size: 10px;
+    letter-spacing: 2.6px;
+    opacity: 0.78;
+    -unity-font-style: normal;
+}
+
+.dashboard-political-heading-line {
+    flex-grow: 1;
+    height: 1px;
+    margin-left: 25px;
+    border-top-width: 1px;
+    opacity: 0.54;
+}
+
+.dashboard-political-row {
+    flex-grow: 1;
+    min-height: 132px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dashboard-political-indicator {
+    width: 30.5%;
+    min-width: 0;
+    justify-content: center;
+}
+
+.dashboard-political-indicator-heading {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+}
+
+.dashboard-political-value {
+    margin-left: 12px;
+    font-size: 37px;
+    white-space: nowrap;
+    -unity-font-style: normal;
+}
+
+.dashboard-political-track {
+    height: 3px;
+    margin-top: 22px;
+    overflow: visible;
+}
+
+.dashboard-political-fill {
+    height: 3px;
+    min-width: 0;
+    opacity: 0.86;
+}
+
+.dashboard-briefing {
+    position: relative;
+    width: 350px;
+    flex-shrink: 0;
+    margin-top: 36px;
+    margin-bottom: 8px;
+    padding-left: 34px;
+    padding-right: 34px;
+    padding-top: 38px;
+    padding-bottom: 32px;
+    border-left-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+}
+
+.dashboard-briefing-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dashboard-briefing-marker {
+    width: 6px;
+    height: 6px;
+    rotate: 45deg;
+    opacity: 0.85;
+}
+
+.dashboard-briefing-title {
+    margin-top: 68px;
+    font-size: 42px;
+    letter-spacing: 0.3px;
+    white-space: normal;
+    -unity-font-style: normal;
+}
+
+.dashboard-briefing-rule {
+    width: 82px;
+    height: 1px;
+    margin-top: 27px;
+    margin-bottom: 27px;
+}
+
+.dashboard-briefing-copy {
+    font-size: 13px;
+    line-height: 22px;
+    letter-spacing: 0.25px;
+    white-space: normal;
+    opacity: 0.86;
+    -unity-font-style: normal;
+}
+
+.dashboard-briefing-footer {
+    flex-grow: 1;
+    min-height: 66px;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.dashboard-status-dot {
+    width: 5px;
+    height: 5px;
+    margin-right: 10px;
+    margin-bottom: 4px;
+    border-radius: 50%;
+    background-color: rgba(232, 214, 177, 0.8);
+}
+
+.dashboard-session-status {
+    font-size: 9px;
+    letter-spacing: 2px;
+    opacity: 0.72;
+    -unity-font-style: normal;
+}
+
+.dashboard-navigation {
+    height: 106px;
+    flex-shrink: 0;
+}
+
+.dashboard-navigation-rule {
+    width: 100%;
+    height: 1px;
+    flex-shrink: 0;
+}
+
+.dashboard-navigation-content {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 3.35%;
+    padding-right: 3.35%;
+}
+
+.dashboard-brand {
+    font-size: 18px;
+    letter-spacing: 2.6px;
+    -unity-font-style: normal;
+}
+
+.dashboard-brand-meta {
+    margin-top: 2px;
+    font-size: 8px;
+    letter-spacing: 2.2px;
+    opacity: 0.58;
+    -unity-font-style: normal;
+}
+
+.dashboard-navigation-links {
+    flex-direction: row;
+    align-items: center;
+}
+
+.dashboard-navigation-active,
+.dashboard-navigation-button {
+    height: 42px;
+    min-width: 132px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    padding-left: 17px;
+    padding-right: 17px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 1px;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 10px;
+    letter-spacing: 2px;
+    -unity-font-style: normal;
+}
+
+.dashboard-navigation-button {
+    opacity: 0.76;
+    transition-property: opacity, translate, border-bottom-color;
+    transition-duration: 160ms;
+    transition-timing-function: ease-out;
+}
+
+.dashboard-navigation-button:hover {
+    opacity: 1;
+    translate: 0 -2px;
+}
+
+.dashboard-navigation-button:active {
+    opacity: 0.58;
+    translate: 0 1px;
+}
+
+.short-desktop .dashboard-header {
+    height: 154px;
+}
+
+.short-desktop .dashboard-emblem {
+    width: 82px;
+    height: 82px;
+}
+
+.short-desktop .dashboard-country-name {
+    font-size: 42px;
+}
+
+.short-desktop .dashboard-main {
+    padding-top: 4px;
+    padding-bottom: 20px;
+}
+
+.short-desktop .dashboard-section-heading {
+    height: 76px;
+}
+
+.short-desktop .dashboard-macro-row {
+    height: 188px;
+    margin-top: 12px;
+}
+
+.short-desktop .dashboard-macro-value {
+    font-size: 48px;
+}
+
+.short-desktop .dashboard-briefing-title {
+    margin-top: 44px;
+}
+
+.short-desktop .dashboard-navigation {
+    height: 88px;
+}
+
+.compact .dashboard-header,
+.compact .dashboard-main,
+.compact .dashboard-navigation-content {
+    padding-left: 2.5%;
+    padding-right: 2.5%;
+}
+
+.compact .dashboard-country-name {
+    font-size: 40px;
+}
+
+.compact .dashboard-date-value {
+    font-size: 16px;
+}
+
+.compact .dashboard-indicators {
+    padding-right: 30px;
+}
+
+.compact .dashboard-macro-indicator {
+    padding-left: 18px;
+    padding-right: 12px;
+}
+
+.compact .dashboard-macro-value {
+    font-size: 43px;
+}
+
+.compact .dashboard-briefing {
+    width: 290px;
+    padding-left: 26px;
+    padding-right: 26px;
+}
+
+.compact .dashboard-briefing-title {
+    font-size: 36px;
+}

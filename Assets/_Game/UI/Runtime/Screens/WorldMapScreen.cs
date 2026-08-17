@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Statecraft.Data;
 using Statecraft.Map.Data;
 using Statecraft.Map.Rendering;
 using Statecraft.UI.Components;
+using Statecraft.UI.Formatting;
 using Statecraft.UI.Themes;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -15,8 +15,6 @@ namespace Statecraft.UI.Screens
     {
         private const string DossierVisibleClass = "world-map-dossier-content--visible";
         private const string HoverVisibleClass = "world-map-hover-readout--visible";
-        private static readonly CultureInfo FrenchCulture = CultureInfo.GetCultureInfo("fr-FR");
-
         private readonly Action<CountryDefinition> openCountry;
         private readonly StatecraftTypography typography;
         private readonly Dictionary<string, CountryDefinition> availableCountries;
@@ -326,8 +324,8 @@ namespace Statecraft.UI.Screens
             dossierEyebrow.text = "ÉTAT SÉLECTIONNÉ";
             selectionName.text = country.DisplayName.ToUpperInvariant();
             selectionCapital.text = country.Capital;
-            selectionPopulation.text = FormatPopulation(country.Population);
-            selectionGdp.text = FormatGdp(country.GdpUsd);
+            selectionPopulation.text = StatecraftValueFormatter.FormatPopulation(country.Population);
+            selectionGdp.text = StatecraftValueFormatter.FormatUsd(country.GdpUsd);
             selectionLeader.text = country.Leader != null ? country.Leader.DisplayName : "—";
             selectionFunction.text = country.Leader != null ? country.Leader.Title : "—";
             selectionStatus.text = "DISPONIBLE";
@@ -434,31 +432,6 @@ namespace Statecraft.UI.Screens
             }
 
             return label;
-        }
-
-        private static string FormatPopulation(long population)
-        {
-            if (population >= 1_000_000)
-            {
-                return $"{(population / 1_000_000d).ToString("0.#", FrenchCulture)} M";
-            }
-
-            return population.ToString("N0", FrenchCulture);
-        }
-
-        private static string FormatGdp(double gdpUsd)
-        {
-            if (gdpUsd >= 1_000_000_000_000d)
-            {
-                return $"{(gdpUsd / 1_000_000_000_000d).ToString("0.#", FrenchCulture)} T$";
-            }
-
-            if (gdpUsd >= 1_000_000_000d)
-            {
-                return $"{(gdpUsd / 1_000_000_000d).ToString("0.#", FrenchCulture)} Md$";
-            }
-
-            return $"{(gdpUsd / 1_000_000d).ToString("0.#", FrenchCulture)} M$";
         }
 
         private static Color WithAlpha(Color color, float alpha)
