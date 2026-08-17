@@ -11,6 +11,7 @@ namespace Statecraft.UI.Themes
         public VisualElement BackgroundArtwork { get; set; }
         public VisualElement ForegroundOverlay { get; set; }
         public VisualElement Emblem { get; set; }
+        public VisualElement PortraitArtwork { get; set; }
         public VisualElement PortraitFrame { get; set; }
         public VisualElement SurfaceTexture { get; set; }
         public VisualElement EditorialSurfaceTexture { get; set; }
@@ -46,6 +47,14 @@ namespace Statecraft.UI.Themes
             SetArtwork(bindings.ForegroundOverlay, theme.LeaderForegroundOverlay);
             SetArtwork(bindings.Emblem, theme.Emblem);
             SetArtwork(bindings.PortraitFrame, theme.PortraitFrame);
+            bindings.PortraitArtwork.style.scale = new Scale(new Vector3(
+                theme.LeaderPortraitScale,
+                theme.LeaderPortraitScale,
+                1f));
+            bindings.PortraitArtwork.style.left = -40f + theme.LeaderPortraitOffset.x;
+            bindings.PortraitArtwork.style.right = -4f - theme.LeaderPortraitOffset.x;
+            bindings.PortraitArtwork.style.top = -8f + theme.LeaderPortraitOffset.y;
+            bindings.PortraitArtwork.style.bottom = -8f - theme.LeaderPortraitOffset.y;
             SetTexture(bindings.SurfaceTexture, theme.SurfaceTexture);
             SetTexture(bindings.EditorialSurfaceTexture, theme.SurfaceTexture);
             bindings.IdentityGradient.SetColors(
@@ -100,6 +109,9 @@ namespace Statecraft.UI.Themes
             }
 
             bindings.IdentityOrnament.ApplyTheme(theme.LeaderIdentityOrnament, theme);
+            bindings.IdentityOrnament.style.translate = new Translate(
+                0f,
+                theme.LeaderIdentityOrnamentOffsetY);
 
             foreach (var cornerSet in bindings.CornerSets)
             {

@@ -51,6 +51,10 @@ MonoBehaviour:
     artwork: {fileID: 21300000, guid: dc37a76a496a73045b3d51d3434dca44, type: 3}
   - statId: eloquence
     artwork: {fileID: 21300000, guid: cf62479bf5b28984d9df3005445658ba, type: 3}
+  leaderPortraitScale: 1.23
+  leaderPortraitOffset: {x: 0, y: 0}
+  leaderIdentityOrnamentOffsetY: 52
+  leaderStatArtworkOpacity: 0.9
   leaderPrestigeFont: {fileID: 12800000, guid: c34cfa36cf7729047a56196ec69f1e81, type: 3}
   leaderPrestigeStrongFont: {fileID: 12800000, guid: 8136f854857ebfb4ea969226507be596, type: 3}
   leaderBackgroundFxEnabled: 1

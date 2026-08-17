@@ -50,12 +50,13 @@ namespace Statecraft.UI.Components
         public VisualElement IconFrame => iconFrame;
         public VisualElement Marker => marker;
 
-        public void SetArtwork(Sprite artwork)
+        public void SetArtwork(Sprite artwork, float opacity = 1f)
         {
             var hasArtwork = artwork != null;
             iconArtwork.style.backgroundImage = hasArtwork
                 ? new StyleBackground(artwork)
                 : new StyleBackground(StyleKeyword.None);
+            iconArtwork.style.opacity = Mathf.Clamp01(opacity);
             iconArtwork.style.display = hasArtwork ? DisplayStyle.Flex : DisplayStyle.None;
             iconLabel.style.display = hasArtwork ? DisplayStyle.None : DisplayStyle.Flex;
             iconFrame.EnableInClassList("stat-icon-frame--artwork", hasArtwork);

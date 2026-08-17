@@ -56,6 +56,15 @@ namespace Statecraft.UI.Themes
         [SerializeField] private Sprite leaderIdentityOrnament = null;
         [SerializeField] private LeaderStatArtworkBinding[] leaderStatArtworks = Array.Empty<LeaderStatArtworkBinding>();
 
+        [Header("Optional Leader Screen presentation")]
+        [Range(0.75f, 1.5f)]
+        [SerializeField] private float leaderPortraitScale = 1f;
+        [SerializeField] private Vector2 leaderPortraitOffset = Vector2.zero;
+        [Range(-120f, 160f)]
+        [SerializeField] private float leaderIdentityOrnamentOffsetY = 0f;
+        [Range(0f, 1f)]
+        [SerializeField] private float leaderStatArtworkOpacity = 1f;
+
         [Header("Optional Typography")]
         [SerializeField] private Font leaderPrestigeFont = null;
         [SerializeField] private Font leaderPrestigeStrongFont = null;
@@ -94,6 +103,10 @@ namespace Statecraft.UI.Themes
         public Sprite LeaderDividerOrnament => leaderDividerOrnament;
         public Sprite LeaderCornerOrnament => leaderCornerOrnament;
         public Sprite LeaderIdentityOrnament => leaderIdentityOrnament;
+        public float LeaderPortraitScale => leaderPortraitScale;
+        public Vector2 LeaderPortraitOffset => leaderPortraitOffset;
+        public float LeaderIdentityOrnamentOffsetY => leaderIdentityOrnamentOffsetY;
+        public float LeaderStatArtworkOpacity => leaderStatArtworkOpacity;
         public Font LeaderPrestigeFont => leaderPrestigeFont;
         public Font LeaderPrestigeStrongFont => leaderPrestigeStrongFont;
         public bool LeaderBackgroundFxEnabled => leaderBackgroundFxEnabled;
@@ -166,6 +179,18 @@ namespace Statecraft.UI.Themes
             ornamentColor = ornament;
             visualIdentifier = identifier;
             transitionStyleIdentifier = transitionIdentifier;
+        }
+
+        public void ConfigureLeaderScreenPresentation(
+            float portraitScale,
+            Vector2 portraitOffset,
+            float identityOrnamentOffsetY,
+            float statArtworkOpacity)
+        {
+            leaderPortraitScale = portraitScale;
+            leaderPortraitOffset = portraitOffset;
+            leaderIdentityOrnamentOffsetY = identityOrnamentOffsetY;
+            leaderStatArtworkOpacity = statArtworkOpacity;
         }
 #endif
     }

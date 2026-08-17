@@ -40,6 +40,7 @@ namespace Statecraft.Editor
                 Html("#0D171C"), Html("#8F1628"), Html("#C9924F"), Html("#080D11"),
                 Html("#121B1D"), Html("#F2E8D3"), Html("#C1B29A"), Html("#7A5735"),
                 Html("#C69B5D"), "carthage-mediterranee", "mosaic-reveal");
+            tunisiaTheme.ConfigureLeaderScreenPresentation(1.23f, Vector2.zero, 52f, 0.9f);
 
             var franceLeader = CreateOrLoad<LeaderDefinition>(Root + "/FranceLeader.asset");
             franceLeader.Configure("fr-leader-01", "Emmanuel Macron", "Président de la République", new LeaderStats

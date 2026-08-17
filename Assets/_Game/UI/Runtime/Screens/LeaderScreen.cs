@@ -217,6 +217,7 @@ namespace Statecraft.UI.Screens
                 BackgroundArtwork = backgroundArtwork,
                 ForegroundOverlay = foregroundOverlay,
                 Emblem = countryEmblem,
+                PortraitArtwork = portraitArtwork,
                 PortraitFrame = portraitFrame,
                 SurfaceTexture = surfaceTexture,
                 EditorialSurfaceTexture = editorialSurfaceTexture,
@@ -297,7 +298,9 @@ namespace Statecraft.UI.Screens
         private void BindStat(CountryTheme theme, string statId, int value)
         {
             var statView = statViews[statId];
-            statView.SetArtwork(theme.GetLeaderStatArtwork(statId));
+            statView.SetArtwork(
+                theme.GetLeaderStatArtwork(statId),
+                theme.LeaderStatArtworkOpacity);
             statView.SetValue(value);
         }
 
