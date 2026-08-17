@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a6ad39f0b494a2cb393eb59b024e2f6, type: 3}
   m_Name: StatecraftTypography
   m_EditorClassIdentifier: Assembly-CSharp::Statecraft.UI.Themes.StatecraftTypography
+  prestigeMedium: {fileID: 12800000, guid: c34cfa36cf7729047a56196ec69f1e81, type: 3}
+  prestigeSemibold: {fileID: 12800000, guid: 8136f854857ebfb4ea969226507be596, type: 3}
   utilityRegular: {fileID: 12800000, guid: d406841540f0b5f46840db996f09b460, type: 3}
   utilityMedium: {fileID: 12800000, guid: 7a0170c99ee7a6744a1dd1b1329d696a, type: 3}
   utilitySemibold: {fileID: 12800000, guid: 72e1e0b9669c684438dd9b3be80df327, type: 3}

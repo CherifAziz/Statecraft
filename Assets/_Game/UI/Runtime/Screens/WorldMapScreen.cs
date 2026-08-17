@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Statecraft.Data;
 using Statecraft.Map.Data;
 using Statecraft.Map.Rendering;
 using Statecraft.UI.Components;
+using Statecraft.UI.Themes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,22 +13,46 @@ namespace Statecraft.UI.Screens
 {
     public sealed class WorldMapScreen : VisualElement
     {
+        private const string DossierVisibleClass = "world-map-dossier-content--visible";
+        private const string HoverVisibleClass = "world-map-hover-readout--visible";
+        private static readonly CultureInfo FrenchCulture = CultureInfo.GetCultureInfo("fr-FR");
+
         private readonly Action<CountryDefinition> openCountry;
+        private readonly StatecraftTypography typography;
         private readonly Dictionary<string, CountryDefinition> availableCountries;
         private readonly WorldMapView mapView;
-        private readonly Label hoverLabel;
+        private readonly VisualElement hoverReadout;
+        private readonly VisualElement hoverAccent;
+        private readonly Label hoverName;
+        private readonly Label hoverAvailability;
+        private readonly VisualElement countryDossier;
+        private readonly VisualElement dossierTint;
+        private readonly VisualElement dossierEmblem;
+        private readonly VisualElement dossierContent;
+        private readonly Label dossierEyebrow;
         private readonly Label selectionName;
+        private readonly VisualElement dossierRuleLine;
+        private readonly VisualElement dossierRuleDiamond;
+        private readonly VisualElement emptyState;
+        private readonly VisualElement availableState;
+        private readonly VisualElement unavailableState;
         private readonly Label selectionCapital;
+        private readonly Label selectionPopulation;
+        private readonly Label selectionGdp;
         private readonly Label selectionLeader;
+        private readonly Label selectionFunction;
         private readonly Label selectionStatus;
+        private readonly Label unavailableStatus;
         private readonly Button incarnateButton;
         private CountryDefinition selectedCountry;
         private WorldMapCountryData selectedMapCountry;
+        private int dossierRevealVersion;
 
         public WorldMapScreen(
             WorldMapData mapData,
             IReadOnlyList<CountryDefinition> countries,
-            Action<CountryDefinition> openCountry)
+            Action<CountryDefinition> openCountry,
+            StatecraftTypography typography)
         {
             if (mapData == null)
             {
@@ -34,6 +60,7 @@ namespace Statecraft.UI.Screens
             }
 
             this.openCountry = openCountry;
+            this.typography = typography;
             availableCountries = BuildCountryRegistry(mapData, countries);
             var presentations = BuildPresentations(availableCountries);
 
@@ -42,63 +69,114 @@ namespace Statecraft.UI.Screens
             AddToClassList("map-screen");
 
             var header = UiFactory.Container("world-map-header");
-            var brand = UiFactory.Container("world-map-brand");
-            brand.Add(UiFactory.Label("STATECRAFT", "world-map-brand-title"));
-            brand.Add(UiFactory.Label("CARTE DU MONDE", "world-map-brand-subtitle"));
-            header.Add(brand);
-            header.Add(UiFactory.Label("GÉOMÉTRIE MONDIALE · NATURAL EARTH 1:50m", "world-map-source-label"));
+            var titleBlock = UiFactory.Container("world-map-header-title-block");
+            titleBlock.Add(UtilitySemibold(UiFactory.Label("STATECRAFT", "world-map-brand-kicker")));
+            titleBlock.Add(PrestigeSemibold(UiFactory.Label("CARTE DU MONDE", "world-map-title")));
+
+            var headerContext = UiFactory.Container("world-map-header-context");
+            headerContext.Add(UiFactory.Container("world-map-header-context-mark"));
+            headerContext.Add(UtilityMedium(UiFactory.Label("VUE STRATÉGIQUE", "world-map-header-context-label")));
+            header.Add(titleBlock);
+            header.Add(headerContext);
 
             var body = UiFactory.Container("world-map-body");
-            var mapPanel = UiFactory.Container("world-map-panel");
-            var mapToolbar = UiFactory.Container("world-map-toolbar");
-            var mapTitleBlock = UiFactory.Container("world-map-title-block");
-            mapTitleBlock.Add(UiFactory.Label("THÉÂTRE MONDIAL", "world-map-eyebrow"));
-            mapTitleBlock.Add(UiFactory.Label(
-                $"{mapData.FeatureCount} TERRITOIRES · {mapData.PolygonCount} POLYGONES",
-                "world-map-count"));
-            hoverLabel = UiFactory.Label("SURVOL —", "world-map-hover-label");
-            mapToolbar.Add(mapTitleBlock);
-            mapToolbar.Add(hoverLabel);
-
+            var mapStage = UiFactory.Container("world-map-stage");
             mapView = new WorldMapView(mapData, presentations)
             {
                 DebugOverlayEnabled = false
             };
             mapView.HoveredCountryChanged += OnHoveredCountryChanged;
             mapView.CountryClicked += OnCountryClicked;
+            mapStage.Add(mapView);
 
-            var mapFooter = UiFactory.Container("world-map-footer");
-            mapFooter.Add(CreateLegendItem("world-map-legend-swatch--available", "DISPONIBLE"));
-            mapFooter.Add(CreateLegendItem("world-map-legend-swatch--unavailable", "INDISPONIBLE"));
-            mapFooter.Add(CreateLegendItem("world-map-legend-swatch--selected", "SÉLECTION"));
-            mapFooter.Add(UiFactory.Label(
-                "MOLETTE : ZOOM  ·  GLISSER SUR L’OCÉAN / CLIC MILIEU : DÉPLACER",
-                "world-map-controls"));
+            mapStage.Add(CreateCorner("world-map-corner--top-left"));
+            mapStage.Add(CreateCorner("world-map-corner--top-right"));
+            mapStage.Add(CreateCorner("world-map-corner--bottom-left"));
+            mapStage.Add(CreateCorner("world-map-corner--bottom-right"));
 
-            mapPanel.Add(mapToolbar);
-            mapPanel.Add(mapView);
-            mapPanel.Add(mapFooter);
+            hoverReadout = UiFactory.Container("world-map-hover-readout");
+            hoverAccent = UiFactory.Container("world-map-hover-accent");
+            var hoverCopy = UiFactory.Container("world-map-hover-copy");
+            hoverName = PrestigeMedium(UiFactory.Label(string.Empty, "world-map-hover-name"));
+            hoverAvailability = UtilityMedium(UiFactory.Label(string.Empty, "world-map-hover-status"));
+            hoverCopy.Add(hoverName);
+            hoverCopy.Add(hoverAvailability);
+            hoverReadout.Add(hoverAccent);
+            hoverReadout.Add(hoverCopy);
+            mapStage.Add(hoverReadout);
 
-            var countryPanel = UiFactory.Container("world-map-country-panel");
-            countryPanel.Add(UiFactory.Label("SÉLECTION", "world-map-eyebrow"));
-            selectionName = UiFactory.Label("Aucun pays sélectionné", "world-map-selection-name");
-            countryPanel.Add(selectionName);
-            countryPanel.Add(UiFactory.Container("world-map-selection-rule"));
+            mapStage.Add(UtilityRegular(UiFactory.Label(
+                "MOLETTE  ZOOM     ·     GLISSER SUR L’OCÉAN  DÉPLACER",
+                "world-map-controls")));
 
-            var selectionDetails = UiFactory.Container("world-map-selection-details");
-            selectionCapital = CreateSelectionLine(selectionDetails, "CAPITALE");
-            selectionLeader = CreateSelectionLine(selectionDetails, "DIRIGEANT");
-            selectionStatus = CreateSelectionLine(selectionDetails, "STATUT");
-            countryPanel.Add(selectionDetails);
+            countryDossier = UiFactory.Container("world-map-country-dossier");
+            dossierTint = UiFactory.Container("world-map-dossier-tint");
+            dossierTint.pickingMode = PickingMode.Ignore;
+            dossierEmblem = UiFactory.Container("world-map-dossier-emblem");
+            dossierEmblem.pickingMode = PickingMode.Ignore;
+            dossierContent = UiFactory.Container("world-map-dossier-content");
 
-            incarnateButton = UiFactory.Button("INCARNER", OpenSelectedCountry, "world-map-incarnate-button");
-            incarnateButton.style.display = DisplayStyle.None;
-            countryPanel.Add(incarnateButton);
+            dossierEyebrow = UtilitySemibold(UiFactory.Label("SÉLECTION", "world-map-dossier-eyebrow"));
+            selectionName = PrestigeSemibold(UiFactory.Label(string.Empty, "world-map-selection-name"));
+            var dossierRule = UiFactory.Container("world-map-dossier-rule");
+            dossierRuleLine = UiFactory.Container("world-map-dossier-rule-line");
+            dossierRuleDiamond = UiFactory.Container("world-map-dossier-rule-diamond");
+            dossierRule.Add(dossierRuleLine);
+            dossierRule.Add(dossierRuleDiamond);
 
-            body.Add(mapPanel);
-            body.Add(countryPanel);
+            emptyState = UiFactory.Container("world-map-empty-state");
+            emptyState.Add(UtilityRegular(UiFactory.Label(
+                "Sélectionnez un État pour consulter son profil.",
+                "world-map-empty-instruction")));
+
+            availableState = UiFactory.Container("world-map-available-state");
+            var metrics = UiFactory.Container("world-map-metrics");
+            selectionCapital = CreateMetric(metrics, "CAPITALE");
+            selectionPopulation = CreateMetric(metrics, "POPULATION");
+            selectionGdp = CreateMetric(metrics, "PIB");
+            availableState.Add(metrics);
+            availableState.Add(UiFactory.Container("world-map-dossier-hairline"));
+
+            var leadership = UiFactory.Container("world-map-leadership");
+            selectionLeader = CreateField(leadership, "DIRIGEANT");
+            selectionFunction = CreateField(leadership, "FONCTION");
+            availableState.Add(leadership);
+            selectionStatus = CreateField(availableState, "STATUT", "world-map-status-value");
+
+            unavailableState = UiFactory.Container("world-map-unavailable-state");
+            unavailableStatus = CreateField(unavailableState, "STATUT", "world-map-status-value");
+            unavailableState.Add(PrestigeMedium(UiFactory.Label("Contenu à venir", "world-map-coming-soon")));
+            unavailableState.Add(UtilityRegular(UiFactory.Label(
+                "Cet État n’est pas encore accessible dans cette version de Statecraft.",
+                "world-map-coming-soon-copy")));
+
+            incarnateButton = UiFactory.Button(
+                "INCARNER LE DIRIGEANT   →",
+                OpenSelectedCountry,
+                "world-map-incarnate-button");
+            if (typography != null && typography.UtilitySemibold != null)
+            {
+                incarnateButton.style.unityFont = new StyleFont(typography.UtilitySemibold);
+            }
+
+            dossierContent.Add(dossierEyebrow);
+            dossierContent.Add(selectionName);
+            dossierContent.Add(dossierRule);
+            dossierContent.Add(emptyState);
+            dossierContent.Add(availableState);
+            dossierContent.Add(unavailableState);
+            dossierContent.Add(incarnateButton);
+            countryDossier.Add(dossierTint);
+            countryDossier.Add(dossierEmblem);
+            countryDossier.Add(dossierContent);
+
+            body.Add(mapStage);
+            body.Add(countryDossier);
             Add(header);
             Add(body);
+
+            BindEmptyDossier();
+            dossierContent.schedule.Execute(() => dossierContent.AddToClassList(DossierVisibleClass)).StartingIn(60);
         }
 
         public WorldMapView MapView => mapView;
@@ -108,14 +186,7 @@ namespace Statecraft.UI.Screens
             selectedCountry = null;
             selectedMapCountry = null;
             mapView.SetSelectedCountry(null);
-            selectionName.text = "Aucun pays sélectionné";
-            SetSelectionLine(selectionCapital, string.Empty, false);
-            SetSelectionLine(selectionLeader, string.Empty, false);
-            SetSelectionLine(selectionStatus, string.Empty, false);
-            incarnateButton.SetEnabled(false);
-            incarnateButton.style.display = DisplayStyle.None;
-            incarnateButton.style.backgroundColor = StyleKeyword.Null;
-            incarnateButton.style.color = StyleKeyword.Null;
+            RevealDossier(BindEmptyDossier);
         }
 
         private static Dictionary<string, CountryDefinition> BuildCountryRegistry(
@@ -154,66 +225,172 @@ namespace Statecraft.UI.Screens
             return presentations;
         }
 
-        private static VisualElement CreateLegendItem(string swatchClass, string text)
+        private Label CreateMetric(VisualElement parent, string label)
         {
-            var item = UiFactory.Container("world-map-legend-item");
-            var swatch = UiFactory.Container("world-map-legend-swatch");
-            swatch.AddToClassList(swatchClass);
-            item.Add(swatch);
-            item.Add(UiFactory.Label(text, "world-map-legend-text"));
-            return item;
+            var metric = UiFactory.Container("world-map-metric");
+            metric.Add(UtilityMedium(UiFactory.Label(label, "world-map-metric-key")));
+            var value = UtilityRegular(UiFactory.Label(string.Empty, "world-map-metric-value"));
+            metric.Add(value);
+            parent.Add(metric);
+            return value;
         }
 
-        private static Label CreateSelectionLine(VisualElement parent, string label)
+        private Label CreateField(VisualElement parent, string label, string valueClass = "world-map-field-value")
         {
-            var row = UiFactory.Container("world-map-selection-row");
-            row.Add(UiFactory.Label(label, "world-map-selection-key"));
-            var value = UiFactory.Label(string.Empty, "world-map-selection-value");
-            row.Add(value);
-            row.style.display = DisplayStyle.None;
-            parent.Add(row);
+            var field = UiFactory.Container("world-map-field");
+            field.Add(UtilityMedium(UiFactory.Label(label, "world-map-field-key")));
+            var value = UtilityRegular(UiFactory.Label(string.Empty, valueClass));
+            field.Add(value);
+            parent.Add(field);
             return value;
+        }
+
+        private static VisualElement CreateCorner(string modifierClass)
+        {
+            var corner = UiFactory.Container("world-map-corner");
+            corner.AddToClassList(modifierClass);
+            corner.pickingMode = PickingMode.Ignore;
+            return corner;
         }
 
         private void OnHoveredCountryChanged(WorldMapCountryData country)
         {
-            hoverLabel.text = country == null
-                ? "SURVOL —"
-                : $"SURVOL  {country.DisplayName.ToUpperInvariant()}  ·  {country.GeographicId}";
+            if (country == null)
+            {
+                hoverReadout.RemoveFromClassList(HoverVisibleClass);
+                return;
+            }
+
+            hoverName.text = country.DisplayName.ToUpperInvariant();
+            if (availableCountries.TryGetValue(country.GeographicId, out var availableCountry))
+            {
+                hoverAvailability.text = "ÉTAT DISPONIBLE";
+                hoverAvailability.style.color = availableCountry.Theme.AccentColor;
+                hoverAccent.style.backgroundColor = availableCountry.Theme.AccentColor;
+            }
+            else
+            {
+                hoverAvailability.text = "INDISPONIBLE";
+                hoverAvailability.style.color = StyleKeyword.Null;
+                hoverAccent.style.backgroundColor = StyleKeyword.Null;
+            }
+
+            hoverReadout.AddToClassList(HoverVisibleClass);
         }
 
         private void OnCountryClicked(WorldMapCountryData mapCountry)
         {
             selectedMapCountry = mapCountry;
             mapView.SetSelectedCountry(mapCountry);
-            selectionName.text = mapCountry.DisplayName.ToUpperInvariant();
 
             if (availableCountries.TryGetValue(mapCountry.GeographicId, out selectedCountry))
             {
-                SetSelectionLine(selectionCapital, selectedCountry.Capital, true);
-                SetSelectionLine(selectionLeader, selectedCountry.Leader.DisplayName, true);
-                SetSelectionLine(selectionStatus, "DISPONIBLE", true);
-                selectionStatus.style.color = selectedCountry.Theme.AccentColor;
-                incarnateButton.style.display = DisplayStyle.Flex;
-                incarnateButton.SetEnabled(true);
-                incarnateButton.style.backgroundColor = selectedCountry.Theme.AccentColor;
-                incarnateButton.style.color = selectedCountry.Theme.BackgroundColor;
+                mapView.FocusCountry(mapCountry);
+                RevealDossier(() => BindAvailableDossier(selectedCountry));
                 return;
             }
 
             selectedCountry = null;
-            SetSelectionLine(selectionCapital, string.Empty, false);
-            SetSelectionLine(selectionLeader, string.Empty, false);
-            SetSelectionLine(selectionStatus, "INDISPONIBLE", true);
-            selectionStatus.style.color = StyleKeyword.Null;
-            incarnateButton.SetEnabled(false);
-            incarnateButton.style.display = DisplayStyle.None;
+            RevealDossier(() => BindUnavailableDossier(mapCountry));
         }
 
-        private static void SetSelectionLine(Label valueLabel, string value, bool visible)
+        private void RevealDossier(Action bind)
         {
-            valueLabel.text = value;
-            valueLabel.parent.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+            var revealVersion = ++dossierRevealVersion;
+            dossierContent.RemoveFromClassList(DossierVisibleClass);
+            dossierContent.schedule.Execute(() =>
+            {
+                if (revealVersion != dossierRevealVersion)
+                {
+                    return;
+                }
+
+                bind();
+                dossierContent.AddToClassList(DossierVisibleClass);
+            }).StartingIn(55);
+        }
+
+        private void BindEmptyDossier()
+        {
+            dossierEyebrow.text = "SÉLECTION";
+            selectionName.text = "Le monde attend\nvotre mandat.";
+            emptyState.style.display = DisplayStyle.Flex;
+            availableState.style.display = DisplayStyle.None;
+            unavailableState.style.display = DisplayStyle.None;
+            incarnateButton.style.display = DisplayStyle.None;
+            ApplyNeutralDossierStyle();
+        }
+
+        private void BindAvailableDossier(CountryDefinition country)
+        {
+            dossierEyebrow.text = "ÉTAT SÉLECTIONNÉ";
+            selectionName.text = country.DisplayName.ToUpperInvariant();
+            selectionCapital.text = country.Capital;
+            selectionPopulation.text = FormatPopulation(country.Population);
+            selectionGdp.text = FormatGdp(country.GdpUsd);
+            selectionLeader.text = country.Leader != null ? country.Leader.DisplayName : "—";
+            selectionFunction.text = country.Leader != null ? country.Leader.Title : "—";
+            selectionStatus.text = "DISPONIBLE";
+            emptyState.style.display = DisplayStyle.None;
+            availableState.style.display = DisplayStyle.Flex;
+            unavailableState.style.display = DisplayStyle.None;
+            incarnateButton.style.display = DisplayStyle.Flex;
+            incarnateButton.SetEnabled(true);
+            ApplyCountryDossierStyle(country.Theme);
+        }
+
+        private void BindUnavailableDossier(WorldMapCountryData country)
+        {
+            dossierEyebrow.text = "ÉTAT SÉLECTIONNÉ";
+            selectionName.text = country.DisplayName.ToUpperInvariant();
+            unavailableStatus.text = "INDISPONIBLE";
+            emptyState.style.display = DisplayStyle.None;
+            availableState.style.display = DisplayStyle.None;
+            unavailableState.style.display = DisplayStyle.Flex;
+            incarnateButton.style.display = DisplayStyle.None;
+            incarnateButton.SetEnabled(false);
+            ApplyNeutralDossierStyle();
+        }
+
+        private void ApplyCountryDossierStyle(CountryTheme theme)
+        {
+            dossierTint.style.backgroundColor = theme.SurfaceColor;
+            dossierTint.style.opacity = 0.22f;
+            dossierEyebrow.style.color = theme.AccentColor;
+            dossierRuleLine.style.backgroundColor = theme.AccentColor;
+            dossierRuleDiamond.style.backgroundColor = theme.AccentColor;
+            selectionStatus.style.color = theme.AccentColor;
+            countryDossier.style.borderLeftColor = WithAlpha(theme.BorderColor, 0.68f);
+            incarnateButton.style.backgroundColor = theme.AccentColor;
+            incarnateButton.style.color = theme.BackgroundColor;
+            incarnateButton.style.borderLeftColor = theme.AccentColor;
+            incarnateButton.style.borderRightColor = theme.AccentColor;
+            incarnateButton.style.borderTopColor = theme.AccentColor;
+            incarnateButton.style.borderBottomColor = theme.AccentColor;
+
+            if (theme.Emblem != null)
+            {
+                dossierEmblem.style.backgroundImage = new StyleBackground(theme.Emblem);
+                dossierEmblem.style.unityBackgroundImageTintColor = theme.OrnamentColor;
+                dossierEmblem.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                dossierEmblem.style.display = DisplayStyle.None;
+            }
+        }
+
+        private void ApplyNeutralDossierStyle()
+        {
+            dossierTint.style.opacity = 0f;
+            dossierEmblem.style.display = DisplayStyle.None;
+            dossierEyebrow.style.color = StyleKeyword.Null;
+            dossierRuleLine.style.backgroundColor = StyleKeyword.Null;
+            dossierRuleDiamond.style.backgroundColor = StyleKeyword.Null;
+            selectionStatus.style.color = StyleKeyword.Null;
+            countryDossier.style.borderLeftColor = StyleKeyword.Null;
+            incarnateButton.style.backgroundColor = StyleKeyword.Null;
+            incarnateButton.style.color = StyleKeyword.Null;
         }
 
         private void OpenSelectedCountry()
@@ -222,6 +399,72 @@ namespace Statecraft.UI.Screens
             {
                 openCountry(selectedCountry);
             }
+        }
+
+        private Label PrestigeMedium(Label label)
+        {
+            return ApplyFont(label, typography != null ? typography.PrestigeMedium : null);
+        }
+
+        private Label PrestigeSemibold(Label label)
+        {
+            return ApplyFont(label, typography != null ? typography.PrestigeSemibold : null);
+        }
+
+        private Label UtilityRegular(Label label)
+        {
+            return ApplyFont(label, typography != null ? typography.UtilityRegular : null);
+        }
+
+        private Label UtilityMedium(Label label)
+        {
+            return ApplyFont(label, typography != null ? typography.UtilityMedium : null);
+        }
+
+        private Label UtilitySemibold(Label label)
+        {
+            return ApplyFont(label, typography != null ? typography.UtilitySemibold : null);
+        }
+
+        private static Label ApplyFont(Label label, Font font)
+        {
+            if (font != null)
+            {
+                label.style.unityFont = new StyleFont(font);
+            }
+
+            return label;
+        }
+
+        private static string FormatPopulation(long population)
+        {
+            if (population >= 1_000_000)
+            {
+                return $"{(population / 1_000_000d).ToString("0.#", FrenchCulture)} M";
+            }
+
+            return population.ToString("N0", FrenchCulture);
+        }
+
+        private static string FormatGdp(double gdpUsd)
+        {
+            if (gdpUsd >= 1_000_000_000_000d)
+            {
+                return $"{(gdpUsd / 1_000_000_000_000d).ToString("0.#", FrenchCulture)} T$";
+            }
+
+            if (gdpUsd >= 1_000_000_000d)
+            {
+                return $"{(gdpUsd / 1_000_000_000d).ToString("0.#", FrenchCulture)} Md$";
+            }
+
+            return $"{(gdpUsd / 1_000_000d).ToString("0.#", FrenchCulture)} M$";
+        }
+
+        private static Color WithAlpha(Color color, float alpha)
+        {
+            color.a = alpha;
+            return color;
         }
     }
 }

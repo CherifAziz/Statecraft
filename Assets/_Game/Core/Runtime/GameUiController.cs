@@ -123,7 +123,7 @@ namespace Statecraft.Core
             var root = document.rootVisualElement;
 
             bootScreen = new BootScreen(ShowWorldMap);
-            worldMapScreen = new WorldMapScreen(worldMapData, countries, OpenCountry);
+            worldMapScreen = new WorldMapScreen(worldMapData, countries, OpenCountry, typography);
             leaderScreen = new LeaderScreen(ShowWorldMap, typography);
 
             root.Add(bootScreen);
@@ -144,7 +144,6 @@ namespace Statecraft.Core
 
         private void ShowWorldMap()
         {
-            worldMapScreen.ClearSelection();
             ShowOnly(worldMapScreen);
         }
 
