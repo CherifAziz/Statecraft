@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Statecraft.Data;
+using Statecraft.Map.Data;
 using Statecraft.UI.Screens;
 using Statecraft.UI.Themes;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace Statecraft.Core
         private LeaderScreen leaderScreen;
         private StatecraftTypography typography;
         private IReadOnlyList<CountryDefinition> countries;
+        private WorldMapData worldMapData;
 
         private void Start()
         {
@@ -105,6 +107,15 @@ namespace Statecraft.Core
             }
 
             countries = catalog.Countries;
+
+            try
+            {
+                worldMapData = WorldMapData.LoadFromResources();
+            }
+            catch (System.Exception exception)
+            {
+                Debug.LogError($"Unable to load world map data: {exception.Message}");
+            }
         }
 
         private void BuildScreens()
@@ -112,7 +123,7 @@ namespace Statecraft.Core
             var root = document.rootVisualElement;
 
             bootScreen = new BootScreen(ShowWorldMap);
-            worldMapScreen = new WorldMapScreen(countries, OpenCountry);
+            worldMapScreen = new WorldMapScreen(worldMapData, countries, OpenCountry);
             leaderScreen = new LeaderScreen(ShowWorldMap, typography);
 
             root.Add(bootScreen);

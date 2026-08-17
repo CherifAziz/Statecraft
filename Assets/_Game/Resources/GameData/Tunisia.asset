@@ -15,6 +15,7 @@ MonoBehaviour:
   id: tunisia
   displayName: Tunisie
   visualIdentifier: TN
+  mapGeographicId: TUN
   flag: {fileID: 0}
   population: 12300000
   gdpUsd: 52000000000

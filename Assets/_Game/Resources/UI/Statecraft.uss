@@ -105,257 +105,275 @@
 }
 
 .map-screen {
-    background-color: #0a0f14;
+    background-color: #050a0f;
 }
 
-.top-bar {
-    min-height: 112px;
+.world-map-header {
+    min-height: 104px;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    padding-left: 4%;
-    padding-right: 4%;
+    padding-left: 42px;
+    padding-right: 42px;
     border-bottom-width: 1px;
-    border-bottom-color: #27323a;
+    border-bottom-color: #24313a;
 }
 
-.brand-title {
-    font-size: 23px;
+.world-map-brand-title {
+    font-size: 24px;
     letter-spacing: 6px;
-    color: #f1eee6;
+    color: #eee9dc;
     -unity-font-style: bold;
 }
 
-.brand-block .eyebrow {
-    margin-top: 7px;
+.world-map-brand-subtitle {
+    margin-top: 6px;
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: #9b8a66;
 }
 
-.session-label,
-.map-date {
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: #76848d;
+.world-map-source-label {
+    font-size: 9px;
+    letter-spacing: 1.8px;
+    color: #687781;
 }
 
-.map-body {
+.world-map-body {
     flex-grow: 1;
+    min-height: 0;
     flex-direction: row;
-    padding: 3.5%;
+    padding-left: 34px;
+    padding-right: 34px;
+    padding-top: 24px;
+    padding-bottom: 30px;
 }
 
-.map-panel {
-    width: 68%;
-    margin-right: 3%;
-}
-
-.map-header {
-    min-height: 48px;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.world-map-placeholder {
-    position: relative;
+.world-map-panel {
     flex-grow: 1;
-    min-height: 520px;
-    overflow: hidden;
-    background-color: #101b22;
+    min-width: 0;
+    margin-right: 24px;
+    background-color: #081017;
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
     border-bottom-width: 1px;
-    border-left-color: #2c3c46;
-    border-right-color: #2c3c46;
-    border-top-color: #2c3c46;
-    border-bottom-color: #2c3c46;
+    border-left-color: #263640;
+    border-right-color: #263640;
+    border-top-color: #263640;
+    border-bottom-color: #263640;
 }
 
-.map-grid {
+.world-map-toolbar {
+    min-height: 66px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 22px;
+    padding-right: 22px;
+    border-bottom-width: 1px;
+    border-bottom-color: #1d2b34;
+}
+
+.world-map-title-block {
+    justify-content: center;
+}
+
+.world-map-eyebrow {
+    font-size: 9px;
+    letter-spacing: 2.4px;
+    color: #b79a61;
+}
+
+.world-map-count {
+    margin-top: 6px;
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    color: #718089;
+}
+
+.world-map-hover-label {
+    font-size: 10px;
+    letter-spacing: 1.6px;
+    color: #c2b596;
+}
+
+.world-map-view {
+    position: relative;
+    flex-grow: 1;
+    min-height: 560px;
+    overflow: hidden;
+    background-color: #050a0f;
+}
+
+.world-map-geometry {
     position: absolute;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    opacity: 0.3;
-    background-color: #15262e;
-    border-left-width: 24px;
-    border-right-width: 24px;
-    border-top-width: 24px;
-    border-bottom-width: 24px;
-    border-left-color: #132129;
-    border-right-color: #132129;
-    border-top-color: #132129;
-    border-bottom-color: #132129;
+    transform-origin: left top;
 }
 
-.landmass {
+.world-map-debug {
     position: absolute;
-    background-color: #40535b;
-    opacity: 0.78;
-    border-radius: 45%;
-    rotate: 8deg;
-}
-
-.landmass--americas {
-    left: 11%;
-    top: 17%;
-    width: 20%;
-    height: 58%;
-    rotate: -16deg;
-}
-
-.landmass--eurasia {
-    left: 43%;
-    top: 13%;
-    width: 44%;
-    height: 30%;
-}
-
-.landmass--africa {
-    left: 47%;
-    top: 43%;
-    width: 18%;
-    height: 38%;
-    rotate: 9deg;
-}
-
-.landmass--oceania {
-    left: 78%;
-    top: 62%;
-    width: 12%;
-    height: 13%;
-    rotate: -8deg;
-}
-
-.map-legend {
-    min-height: 50px;
-    flex-direction: row;
-    align-items: center;
-}
-
-.legend-dot {
-    width: 8px;
-    height: 8px;
-    margin-right: 10px;
-    border-radius: 50%;
-    background-color: #c6a86c;
-}
-
-.legend-text {
+    left: 14px;
+    top: 14px;
+    padding: 10px;
+    background-color: rgba(2, 5, 8, 0.88);
+    color: #d5c8aa;
     font-size: 10px;
-    letter-spacing: 2px;
-    color: #7b898f;
-}
-
-.country-panel {
-    width: 29%;
-    min-width: 350px;
-    padding: 34px;
-    justify-content: center;
-    background-color: #111820;
-    border-left-width: 1px;
-    border-left-color: #2a363e;
-}
-
-.panel-title,
-.section-title {
-    margin-top: 12px;
-    font-size: 28px;
-    color: #f1ede4;
-    -unity-font-style: bold;
-}
-
-.body-copy {
-    margin-top: 12px;
-    margin-bottom: 26px;
-    color: #8d989e;
-    font-size: 13px;
     white-space: normal;
 }
 
-.country-list {
-    margin-bottom: 22px;
-}
-
-.country-card {
-    height: 82px;
-    margin-bottom: 10px;
-    padding-left: 18px;
-    padding-right: 18px;
+.world-map-footer {
+    min-height: 54px;
     flex-direction: row;
     align-items: center;
-    background-color: #182129;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-top-width: 1px;
+    border-top-color: #1d2b34;
+}
+
+.world-map-legend-item {
+    margin-right: 22px;
+    flex-direction: row;
+    align-items: center;
+}
+
+.world-map-legend-swatch {
+    width: 9px;
+    height: 9px;
+    margin-right: 8px;
     border-left-width: 1px;
     border-right-width: 1px;
     border-top-width: 1px;
     border-bottom-width: 1px;
-    border-left-color: #2d3942;
-    border-right-color: #2d3942;
-    border-top-color: #2d3942;
-    border-bottom-color: #2d3942;
-    border-radius: 0;
+    border-left-color: rgba(238, 232, 215, 0.28);
+    border-right-color: rgba(238, 232, 215, 0.28);
+    border-top-color: rgba(238, 232, 215, 0.28);
+    border-bottom-color: rgba(238, 232, 215, 0.28);
 }
 
-.country-card:hover {
-    background-color: #202b34;
+.world-map-legend-swatch--available {
+    background-color: #2b3d47;
 }
 
-.country-card--selected {
-    background-color: #242d33;
+.world-map-legend-swatch--unavailable {
+    background-color: #18252e;
 }
 
-.country-monogram {
-    width: 42px;
-    height: 42px;
-    margin-right: 16px;
-    align-items: center;
-    justify-content: center;
-    background-color: #0b1014;
-    color: #d4b66d;
-    font-size: 12px;
-    letter-spacing: 1px;
-    -unity-text-align: middle-center;
+.world-map-legend-swatch--selected {
+    background-color: #8a7449;
+}
+
+.world-map-legend-text {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: #7b898f;
+}
+
+.world-map-controls {
+    flex-grow: 1;
+    font-size: 8px;
+    letter-spacing: 1.2px;
+    color: #5f6d76;
+    -unity-text-align: middle-right;
+}
+
+.world-map-country-panel {
+    width: 326px;
+    min-width: 326px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 38px;
+    padding-bottom: 30px;
+    background-color: #0b1218;
+    border-left-width: 1px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    border-left-color: #263640;
+    border-right-color: #263640;
+    border-top-color: #263640;
+    border-bottom-color: #263640;
+}
+
+.world-map-selection-name {
+    margin-top: 18px;
+    min-height: 76px;
+    font-size: 31px;
+    color: #eee9dc;
+    white-space: normal;
     -unity-font-style: bold;
 }
 
-.country-card-content {
+.world-map-selection-rule {
+    width: 54px;
+    height: 1px;
+    margin-top: 4px;
+    margin-bottom: 34px;
+    background-color: #967d4c;
+}
+
+.world-map-selection-details {
     flex-grow: 1;
 }
 
-.country-name {
+.world-map-selection-row {
+    margin-bottom: 26px;
+}
+
+.world-map-selection-key {
+    font-size: 8px;
+    letter-spacing: 2px;
+    color: #61717b;
+}
+
+.world-map-selection-value {
+    margin-top: 7px;
     font-size: 17px;
-    color: #eee9df;
+    color: #d8d2c4;
+    white-space: normal;
+}
+
+.world-map-incarnate-button {
+    min-height: 52px;
+    border-radius: 0;
+    font-size: 10px;
+    letter-spacing: 3px;
     -unity-font-style: bold;
-}
-
-.country-capital {
-    margin-top: 4px;
-    font-size: 9px;
-    letter-spacing: 2px;
-    color: #75828a;
-}
-
-.country-arrow {
-    color: #87949a;
-    font-size: 20px;
-}
-
-.selection-label {
-    margin-bottom: 12px;
-    color: #7f8d94;
-    font-size: 9px;
-    letter-spacing: 2px;
 }
 
 .compact .boot-title {
     font-size: 52px;
 }
 
-.compact .map-body {
-    padding: 2.5%;
+.compact .world-map-header {
+    min-height: 88px;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
-.compact .country-panel {
-    padding: 22px;
+.compact .world-map-body {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 18px;
+    padding-bottom: 22px;
+}
+
+.compact .world-map-panel {
+    margin-right: 16px;
+}
+
+.compact .world-map-country-panel {
+    width: 280px;
+    min-width: 280px;
+    padding-left: 22px;
+    padding-right: 22px;
+}
+
+.compact .world-map-controls {
+    display: none;
 }

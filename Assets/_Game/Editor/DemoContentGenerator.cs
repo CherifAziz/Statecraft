@@ -77,10 +77,10 @@ namespace Statecraft.Editor
             });
 
             var france = CreateOrLoad<CountryDefinition>(Root + "/France.asset");
-            france.Configure("france", "France", "FR", 68_600_000, 3_200_000_000_000d, "Paris", franceTheme, franceLeader);
+            france.Configure("france", "France", "FR", "FRA", 68_600_000, 3_200_000_000_000d, "Paris", franceTheme, franceLeader);
 
             var tunisia = CreateOrLoad<CountryDefinition>(Root + "/Tunisia.asset");
-            tunisia.Configure("tunisia", "Tunisie", "TN", 12_300_000, 52_000_000_000d, "Tunis", tunisiaTheme, tunisiaLeader);
+            tunisia.Configure("tunisia", "Tunisie", "TN", "TUN", 12_300_000, 52_000_000_000d, "Tunis", tunisiaTheme, tunisiaLeader);
 
             var catalog = CreateOrLoad<CountryCatalog>(CatalogPath);
             catalog.Configure(new[] { france, tunisia });

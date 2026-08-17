@@ -15,6 +15,7 @@ MonoBehaviour:
   id: france
   displayName: France
   visualIdentifier: FR
+  mapGeographicId: FRA
   flag: {fileID: 0}
   population: 68600000
   gdpUsd: 3200000000000
